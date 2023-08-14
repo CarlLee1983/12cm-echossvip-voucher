@@ -1,0 +1,28 @@
+{
+    "name": "chyp-partner-api-sdk/echoss-voucher",
+    "description": "12CM echoss VIP API package",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Carl",
+            "email": "cylee@chyp.com.tw"
+        }
+    ],
+    "minimum-stability": "stable",
+    "autoload": {
+        "psr-4": {
+            "CHYP\\Partner\\Echooss\\Voucher\\": "src"
+        }
+    },
+    "require": {
+        "php": ">=7.4",
+        "guzzlehttp/guzzle": "^7.0"
+    },
+    "require-dev": {
+        "fzaninotto/faker": "~1.4",
+        "mockery/mockery": "0.9.*",
+        "phpunit/phpunit": "^9",
+        "vlucas/phpdotenv": "^5.5"
+    }
+}

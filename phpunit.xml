@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit colors="true" bootstrap="vendor/autoload.php">
+    <testsuites>
+        <testsuite name="Echoss VIP Voucher API test">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+    <php>
+    </php>
+</phpunit>
