@@ -2,7 +2,7 @@
 
 namespace CHYP\Partner\Echooss\Voucher\Type\Response;
 
-class VoucherImage
+class VoucherImage extends Response
 {
     /**
      * Image ID.

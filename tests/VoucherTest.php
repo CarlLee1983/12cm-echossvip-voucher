@@ -15,7 +15,7 @@ use CHYP\Partner\Echooss\Voucher\Type\Request\VoucherList;
 use Dotenv\Dotenv;
 use PHPUnit\Framework\TestCase;
 
-class CoreTest extends TestCase
+class VoucherTest extends TestCase
 {
     /**
      * Call this template method before each test method is run.

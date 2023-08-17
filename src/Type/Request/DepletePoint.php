@@ -2,11 +2,9 @@
 
 namespace CHYP\Partner\Echooss\Voucher\Type\Request;
 
-use CHYP\Partner\Echooss\Voucher\Utils;
-
-class CreateRedeemBatch extends Request
+class DepletePoint extends Request
 {
-    use StoreParamsTrait, PhoneNumberTrait;
+    use PhoneNumberTrait;
 
     /**
      * Protected data.
@@ -18,9 +16,9 @@ class CreateRedeemBatch extends Request
     ];
 
     /**
-     * Voucher batch list.
+     * Required, Redemption Points (Amount of Cash Discount).
      *
-     * @var array
+     * @var integer
      */
-    public array $batchList = [];
+    public int $point = 0;
 }

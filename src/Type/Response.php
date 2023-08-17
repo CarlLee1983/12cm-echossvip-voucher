@@ -2,6 +2,9 @@
 
 namespace CHYP\Partner\Echooss\Voucher\Type;
 
+use CHYP\Partner\Echooss\Voucher\Type\Response\ResponseInterface;
+use CHYP\Partner\Echooss\Voucher\Type\Response\AccumulatePoint;
+use CHYP\Partner\Echooss\Voucher\Type\Response\DepletePoint;
 use CHYP\Partner\Echooss\Voucher\Type\Response\CreateRedeemBatch;
 use CHYP\Partner\Echooss\Voucher\Type\Response\ExecuteRedeemBatch;
 use CHYP\Partner\Echooss\Voucher\Type\Response\FreezeRedeemBatch;
@@ -10,10 +13,18 @@ use CHYP\Partner\Echooss\Voucher\Type\Response\QueryRedeemBatchDetail;
 use CHYP\Partner\Echooss\Voucher\Type\Response\ReverseRedeem;
 use CHYP\Partner\Echooss\Voucher\Type\Response\UpdateRedeemBatch;
 use CHYP\Partner\Echooss\Voucher\Type\Response\Voucher;
+use CHYP\Partner\Echooss\Voucher\Type\Response\VoucherList;
 use CHYP\Partner\Echooss\Voucher\Utils;
 
 class Response
 {
+    /**
+     * Original Response params.
+     *
+     * @var array
+     */
+    public array $params = [];
+
     /**
      * Map response type.
      *
@@ -28,6 +39,8 @@ class Response
         'updateRedeemBatch' => 'updateRedeemBatch',
         'executeRedeemBatch' => 'executeRedeemBatch',
         'reverseRedeem' => 'reverseRedeem',
+        'accumulatePoint' => 'accumulatePoint',
+        'depletePoint' => 'depletePoint',
     ];
 
     /**
@@ -45,9 +58,9 @@ class Response
     /**
      * Format.
      *
-     * @return mixed
+     * @return \CHYP\Partner\Echooss\Voucher\Type\Response\ResponseInterface
      */
-    public function format()
+    public function format(): ResponseInterface
     {
         $method = $this->mapType[$this->type];
 
@@ -60,9 +73,9 @@ class Response
      * @param object $response
      * @param array $params
      *
-     * @return mixed
+     * @return \CHYP\Partner\Echooss\Voucher\Type\Response\ResponseInterface
      */
-    protected function mappingValue($response, array $params)
+    protected function mappingValue($response, array $params): ResponseInterface
     {
         foreach ($params as $columnName => $value) {
             $columnName = Utils::camelCase($columnName);
@@ -76,9 +89,9 @@ class Response
     /**
      * Voucher list response.
      *
-     * @return array
+     * @return \CHYP\Partner\Echooss\Voucher\Type\Response\VoucherList
      */
-    public function voucherList(): array
+    public function voucherList(): VoucherList
     {
         $data = [];
 
@@ -86,7 +99,7 @@ class Response
             $data[] = $this->mappingValue(new Voucher, $row);
         }
 
-        return $data;
+        return $this->mappingValue(new VoucherList, ['data' => $data]);
     }
 
     /**
@@ -114,7 +127,7 @@ class Response
      *
      * @return \CHYP\Partner\Echooss\Voucher\Type\Response\QueryRedeemBatchDetail
      */
-    public function queryRedeemBatchDetail()
+    public function queryRedeemBatchDetail(): QueryRedeemBatchDetail
     {
         return $this->mappingValue(new QueryRedeemBatchDetail, $this->params);
     }
@@ -124,7 +137,7 @@ class Response
      *
      * @return \CHYP\Partner\Echooss\Voucher\Type\Response\FreezeRedeemBatch
      */
-    public function freezeRedeemBatch()
+    public function freezeRedeemBatch(): FreezeRedeemBatch
     {
         return $this->mappingValue(new FreezeRedeemBatch, $this->params);
     }
@@ -134,7 +147,7 @@ class Response
      *
      * @return \CHYP\Partner\Echooss\Voucher\Type\Response\UpdateRedeemBatch
      */
-    public function updateRedeemBatch()
+    public function updateRedeemBatch(): UpdateRedeemBatch
     {
         return $this->mappingValue(new UpdateRedeemBatch, $this->params);
     }
@@ -144,7 +157,7 @@ class Response
      *
      * @return \CHYP\Partner\Echooss\Voucher\Type\Response\ExecuteRedeemBatch
      */
-    public function executeRedeemBatch()
+    public function executeRedeemBatch(): ExecuteRedeemBatch
     {
         return $this->mappingValue(new ExecuteRedeemBatch, $this->params);
     }
@@ -154,8 +167,28 @@ class Response
      *
      * @return \CHYP\Partner\Echooss\Voucher\Type\Response\ReverseRedeem
      */
-    public function reverseRedeem()
+    public function reverseRedeem(): ReverseRedeem
     {
         return $this->mappingValue(new ReverseRedeem, $this->params);
+    }
+
+    /**
+     * Echoss VIP Member Loyalty Card: New Purchase Added (Points Earned for Minimum Spending.
+     *
+     * @return \CHYP\Partner\Echooss\Voucher\Type\Response\AccumulatePoint
+     */
+    public function accumulatePoint(): AccumulatePoint
+    {
+        return $this->mappingValue(new AccumulatePoint, $this->params);
+    }
+
+    /**
+     * Deduct Echoss VIP Member Loyalty Card Points.
+     *
+     * @return \CHYP\Partner\Echooss\Voucher\Type\Response\DepletePoint
+     */
+    public function depletePoint(): DepletePoint
+    {
+        return $this->mappingValue(new DepletePoint, $this->params);
     }
 }

@@ -1,6 +1,9 @@
 <?php
 
+use CHYP\Partner\Echooss\Voucher\Type\Request\AccumulatePoint;
+use CHYP\Partner\Echooss\Voucher\Type\Request\AccumulatePointDetail;
 use CHYP\Partner\Echooss\Voucher\Type\Request\CreateRedeemBatch;
+use CHYP\Partner\Echooss\Voucher\Type\Request\DepletePoint;
 use CHYP\Partner\Echooss\Voucher\Type\Request\ExecuteRedeemBatch;
 use CHYP\Partner\Echooss\Voucher\Type\Request\FreezeRedeemBatch;
 use CHYP\Partner\Echooss\Voucher\Type\Request\QueryRedeemBatch;
@@ -257,5 +260,45 @@ class RequestTypeTest extends TestCase
         $data->phoneNumber = $phoneNumber;
 
         $this->assertEquals($data->phoneNumber, $phoneNumber);
+    }
+
+    public function testAccumulatePoint()
+    {
+        $data = new AccumulatePoint;
+        $phoneNumber = '0912123456';
+
+        $data->phoneNumber = $phoneNumber;
+        $data->amount = 10;
+        $data->details = [
+            (new AccumulatePointDetail('test', 10, 1))->toArray(),
+        ];
+
+        $params = $data->toArray();
+
+        $this->assertEquals($params, [
+            'phone_number' => $phoneNumber,
+            'amount' => $data->amount,
+            'details' => [
+                [
+                    'product_name' => 'test',
+                    'unit_price' => 10,
+                    'quantity' => 1,
+                ],
+            ],
+        ]);
+    }
+
+    public function testDepletePoint()
+    {
+        $data = new DepletePoint;
+        $data->phoneNumber = '0912123456';
+        $data->point = 10;
+
+        $params = $data->toArray();
+
+        $this->assertEquals($params, [
+            'phone_number' => $data->phoneNumber,
+            'point' => $data->point,
+        ]);
     }
 }

@@ -35,8 +35,10 @@ class ResponseTest extends TestCase
         $response = json_decode($response, true);
 
         $data = (new CHYP\Partner\Echooss\Voucher\Type\Response('voucherList', $response['data'] ?? []))->format();
+        $data = (new CHYP\Partner\Echooss\Voucher\Core)->deepDeconstruction($data->toArray());
+        $firstVoucher = reset($data);
 
-        $this->assertEquals(reset($data)->voucherHashId, 'NhYNDyrdzG');
+        $this->assertEquals($firstVoucher['voucherHashId'], 'NhYNDyrdzG');
     }
 
     public function testRedeemBatch()
@@ -173,5 +175,27 @@ class ResponseTest extends TestCase
 
         $this->assertTrue($data->success);
         $this->assertEquals($data->message, 'Successfully reverse redeem by pos');
+    }
+
+    public function testRewardsCardAccumulatePointResponse()
+    {
+        $faker = Faker\Factory::create();
+        $message = $faker->text(10);
+
+        $response = ['message' => $message];
+        $data = (new CHYP\Partner\Echooss\Voucher\Type\Response('accumulatePoint', $response))->format();
+
+        $this->assertEquals($data->message, $message);
+    }
+
+    public function testRewardsCardDepletePointResponse()
+    {
+        $faker = Faker\Factory::create();
+        $message = $faker->text(10);
+
+        $response = ['message' => $message];
+        $data = (new CHYP\Partner\Echooss\Voucher\Type\Response('depletePoint', $response))->format();
+
+        $this->assertEquals($data->message, $message);
     }
 }

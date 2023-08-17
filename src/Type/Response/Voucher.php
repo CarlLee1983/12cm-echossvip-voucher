@@ -3,7 +3,7 @@
 namespace CHYP\Partner\Echooss\Voucher\Type\Response;
 
 use DateTimeImmutable;
-use Exception;
+use CHYP\Partner\Echooss\Voucher\Exception\ResponseTypeException;
 
 class Voucher extends Response
 {
@@ -118,7 +118,7 @@ class Voucher extends Response
     public function type(int $value): int
     {
         if ($value != 1 && $value != 2) {
-            throw new Exception('Voucher type is error.');
+            throw new ResponseTypeException('Voucher type is error.');
         }
 
         return $value;
