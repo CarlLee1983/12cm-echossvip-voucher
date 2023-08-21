@@ -181,11 +181,15 @@ class ResponseTest extends TestCase
     {
         $faker = Faker\Factory::create();
         $message = $faker->text(10);
+        $point = 3;
+        $amount = 300;
 
-        $response = ['message' => $message];
+        $response = ['message' => $message, 'point' => $point, 'amount' => $amount];
         $data = (new CHYP\Partner\Echooss\Voucher\Type\Response('accumulatePoint', $response))->format();
 
         $this->assertEquals($data->message, $message);
+        $this->assertEquals($data->point, $point);
+        $this->assertEquals($data->amount, $amount);
     }
 
     public function testRewardsCardDepletePointResponse()
