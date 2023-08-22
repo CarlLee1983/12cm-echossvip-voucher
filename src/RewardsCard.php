@@ -61,7 +61,7 @@ class RewardsCard
             ]
         );
 
-        return new Response('accumulatePoint', json_decode($response->getBody(), true));
+        return new Response('accumulatePoint', json_decode($response->getBody(), true)['data'] ?? []);
     }
 
     /**
