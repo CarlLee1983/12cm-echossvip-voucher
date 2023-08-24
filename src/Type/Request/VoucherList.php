@@ -3,7 +3,6 @@
 namespace CHYP\Partner\Echooss\Voucher\Type\Request;
 
 use CHYP\Partner\Echooss\Voucher\Type\Request\Request as DefaultRequest;
-use CHYP\Partner\Echooss\Voucher\Utils;
 
 class VoucherList extends DefaultRequest
 {

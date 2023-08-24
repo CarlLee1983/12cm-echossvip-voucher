@@ -2,7 +2,6 @@
 
 namespace CHYP\Partner\Echooss\Voucher;
 
-use CHYP\Partner\Echooss\Voucher\Type\Request\RequestInterface;
 use CHYP\Partner\Echooss\Voucher\Type\Response;
 use CHYP\Partner\Echooss\Voucher\Exception\RequestTypeException;
 
@@ -41,7 +40,7 @@ class Voucher
         'queryRedeemBatchDetail' => '/query-redeem-batch-detail',
         'freezeRedeemBatch' => '/freeze-redeem-batch',
         'updateRedeemBatch' => '/update-redeem-batch',
-        'executeRedeemBatch' => 'execute-redeem-batch',
+        'executeRedeemBatch' => '/execute-redeem-batch',
         'reverseRedeem' => '/reverse-redeem',
     ];
 

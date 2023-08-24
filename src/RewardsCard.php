@@ -3,7 +3,6 @@
 namespace CHYP\Partner\Echooss\Voucher;
 
 use CHYP\Partner\Echooss\Voucher\Type\Response;
-use CHYP\Partner\Echooss\Voucher\Type\Request\RequestInterface;
 
 class RewardsCard
 {

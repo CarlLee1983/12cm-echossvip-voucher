@@ -105,11 +105,10 @@ class VoucherTest extends TestCase
         $param->storeOpenId = $faker->text(10);
         $param->posMacUid = $faker->text(10);
 
-        $response = $this->core->voucher('queryRedeemBatch', $param);
-        $data = $response->format();
+        $this->expectException(ResponseTypeException::class);
+        $this->expectExceptionMessage('{"data":{"success":false,"message":"Fail to query : batch_uuid"}}');
 
-        $this->assertTrue($data->success);
-        $this->assertEquals($data->batchUuid, $param->batchToken);
+        $response = $this->core->voucher('queryRedeemBatch', $param);
     }
 
     public function testRequestQueryRedeemBatchDetail()
@@ -157,10 +156,10 @@ class VoucherTest extends TestCase
         $param->posMacUid = $faker->text(10);
         $param->freezeMins = 10;
 
-        $response = $this->core->voucher('freezeRedeemBatch', $param);
-        $response = $response->format();
+        $this->expectException(ResponseTypeException::class);
+        $this->expectExceptionMessage('{"data":{"success":false,"message":"batch_uuid not found"}}');
 
-        $this->assertTrue($response->success);
+        $this->core->voucher('freezeRedeemBatch', $param);
     }
 
     public function testUpdateRedeemBatch()
@@ -191,9 +190,9 @@ class VoucherTest extends TestCase
         $param->posMacUid = $faker->text(10);
 
         $this->expectException(ResponseTypeException::class);
-        $this->expectExceptionMessage('{"data":{"success":false,"message":"The batch_uuid not found"}}');
+        $this->expectExceptionMessage('{"data":{"success":false,"message":"batch_uuid not found"}}');
 
-        $this->core->voucher('queryRedeemBatchDetail', $param);
+        $this->core->voucher('executeRedeemBatch', $param);
     }
 
     /**
@@ -205,7 +204,6 @@ class VoucherTest extends TestCase
         $this->expectExceptionMessage($message);
 
         $this->core->voucher('reverseRedeem', $param);
-
     }
 
     public function additionReverseRedeemProvider()
