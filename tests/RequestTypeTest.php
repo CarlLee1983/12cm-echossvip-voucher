@@ -20,21 +20,21 @@ class RequestTypeTest extends TestCase
         $faker = Faker\Factory::create();
         $randomString = $faker->text(10);
 
-        $data = new VoucherList;
+        $data = new VoucherList();
         $data->lineId = $randomString;
         $this->assertEquals($data->lineId, $randomString);
     }
 
     public function testRequestVoucherListTypeToParams()
     {
-        $data = new VoucherList;
+        $data = new VoucherList();
         $faker = Faker\Factory::create();
         $data->lineId = $faker->text(10);
 
         $this->assertTrue(isset($data->toArray()['line_id']));
         $this->assertFalse(isset($data->toArray()['phone_number']));
 
-        $data = new VoucherList;
+        $data = new VoucherList();
         $phoneNumber = '0912123456';
         $data->phoneNumber = $phoneNumber;
 
@@ -44,7 +44,7 @@ class RequestTypeTest extends TestCase
 
     public function testRequestVoucherListTypeWithValidPhoneNumber()
     {
-        $data = new VoucherList;
+        $data = new VoucherList();
         $phoneNumber = '0912123456';
         $data->phoneNumber = $phoneNumber;
 
@@ -56,13 +56,13 @@ class RequestTypeTest extends TestCase
         $this->expectException(\CHYP\Partner\Echooss\Voucher\Exception\RequestTypeException::class);
         $this->expectExceptionMessage('Invalid Taiwan mobile number.');
 
-        $data = new VoucherList;
+        $data = new VoucherList();
         $data->phoneNumber = '123';
     }
 
     public function testPhoneNumberIsSetCorrectly()
     {
-        $data = new CreateRedeemBatch;
+        $data = new CreateRedeemBatch();
         $phoneNumber = '0912123456';
         $data->phoneNumber = $phoneNumber;
 
@@ -71,7 +71,7 @@ class RequestTypeTest extends TestCase
 
     public function testStoreOpenIdAndPosMacUidAreSetCorrectly()
     {
-        $data = new CreateRedeemBatch;
+        $data = new CreateRedeemBatch();
         $storeOpenId = 'adfasd';
         $posMacUid = 'bacafgds';
 
@@ -81,20 +81,20 @@ class RequestTypeTest extends TestCase
         $this->assertEquals($data->storeOpenId, $storeOpenId);
         $this->assertEquals($data->posMacUid, $posMacUid);
 
-        $data = new CreateRedeemBatch;
+        $data = new CreateRedeemBatch();
         $params = $data->toArray();
 
         $this->assertEquals($params, [
             'store_open_id' => '',
-            'pos_mac_uid' => '',
-            'batch_list' => [],
-            'phone_number' => '',
+            'pos_mac_uid'   => '',
+            'batch_list'    => [],
+            'phone_number'  => '',
         ]);
     }
 
     public function testBatchListIsSetCorrectly()
     {
-        $data = new CreateRedeemBatch;
+        $data = new CreateRedeemBatch();
         $faker = Faker\Factory::create();
         $id1 = $faker->text(10);
         $id2 = $faker->text(10);
@@ -113,13 +113,13 @@ class RequestTypeTest extends TestCase
 
     public function testQueryRedeemBatch()
     {
-        $data = new QueryRedeemBatch;
+        $data = new QueryRedeemBatch();
         $params = $data->toArray();
 
         $this->assertEquals($params, [
-            'batch_token' => '',
+            'batch_token'   => '',
             'store_open_id' => '',
-            'pos_mac_uid' => '',
+            'pos_mac_uid'   => '',
         ]);
 
         $faker = Faker\Factory::create();
@@ -135,21 +135,21 @@ class RequestTypeTest extends TestCase
         $params = $data->toArray();
 
         $this->assertEquals($params, [
-            'batch_token' => $batchToken,
+            'batch_token'   => $batchToken,
             'store_open_id' => $storeOpenId,
-            'pos_mac_uid' => $posMacUid,
+            'pos_mac_uid'   => $posMacUid,
         ]);
     }
 
     public function testQueryRedeemBatchDetail()
     {
-        $data = new QueryRedeemBatchDetail;
+        $data = new QueryRedeemBatchDetail();
         $params = $data->toArray();
 
         $this->assertEquals($params, [
-            'batch_uuid' => '',
+            'batch_uuid'    => '',
             'store_open_id' => '',
-            'pos_mac_uid' => '',
+            'pos_mac_uid'   => '',
         ]);
 
         $faker = Faker\Factory::create();
@@ -165,22 +165,22 @@ class RequestTypeTest extends TestCase
         $params = $data->toArray();
 
         $this->assertEquals($params, [
-            'batch_uuid' => $batchUuid,
+            'batch_uuid'    => $batchUuid,
             'store_open_id' => $storeOpenId,
-            'pos_mac_uid' => $posMacUid,
+            'pos_mac_uid'   => $posMacUid,
         ]);
     }
 
     public function testFreezeRedeemBatch()
     {
-        $data = new FreezeRedeemBatch;
+        $data = new FreezeRedeemBatch();
         $params = $data->toArray();
 
         $this->assertEquals($params, [
-            'batch_uuid' => '',
+            'batch_uuid'    => '',
             'store_open_id' => '',
-            'pos_mac_uid' => '',
-            'freeze_mins' => 1,
+            'pos_mac_uid'   => '',
+            'freeze_mins'   => 1,
         ]);
 
         $faker = Faker\Factory::create();
@@ -197,16 +197,16 @@ class RequestTypeTest extends TestCase
         $params = $data->toArray();
 
         $this->assertEquals($params, [
-            'batch_uuid' => $batchUuid,
+            'batch_uuid'    => $batchUuid,
             'store_open_id' => $storeOpenId,
-            'pos_mac_uid' => $posMacUid,
-            'freeze_mins' => 3,
+            'pos_mac_uid'   => $posMacUid,
+            'freeze_mins'   => 3,
         ]);
     }
 
     public function testUpdateRedeemBatch()
     {
-        $data = new UpdateRedeemBatch;
+        $data = new UpdateRedeemBatch();
         $faker = Faker\Factory::create();
         $id1 = $faker->text(10);
         $id2 = $faker->text(10);
@@ -225,13 +225,13 @@ class RequestTypeTest extends TestCase
 
     public function testExecuteRedeemBatch()
     {
-        $data = new ExecuteRedeemBatch;
+        $data = new ExecuteRedeemBatch();
         $params = $data->toArray();
 
         $this->assertEquals($params, [
-            'batch_uuid' => '',
+            'batch_uuid'    => '',
             'store_open_id' => '',
-            'pos_mac_uid' => '',
+            'pos_mac_uid'   => '',
         ]);
 
         $faker = Faker\Factory::create();
@@ -247,15 +247,15 @@ class RequestTypeTest extends TestCase
         $params = $data->toArray();
 
         $this->assertEquals($params, [
-            'batch_uuid' => $batchUuid,
+            'batch_uuid'    => $batchUuid,
             'store_open_id' => $storeOpenId,
-            'pos_mac_uid' => $posMacUid,
+            'pos_mac_uid'   => $posMacUid,
         ]);
     }
 
     public function testReverseRedeem()
     {
-        $data = new ReverseRedeem;
+        $data = new ReverseRedeem();
         $phoneNumber = '0912123456';
         $data->phoneNumber = $phoneNumber;
 
@@ -264,7 +264,7 @@ class RequestTypeTest extends TestCase
 
     public function testAccumulatePoint()
     {
-        $data = new AccumulatePoint;
+        $data = new AccumulatePoint();
         $phoneNumber = '0912123456';
 
         $data->phoneNumber = $phoneNumber;
@@ -277,12 +277,12 @@ class RequestTypeTest extends TestCase
 
         $this->assertEquals($params, [
             'phone_number' => $phoneNumber,
-            'amount' => $data->amount,
-            'details' => [
+            'amount'       => $data->amount,
+            'details'      => [
                 [
                     'product_name' => 'test',
-                    'unit_price' => 10,
-                    'quantity' => 1,
+                    'unit_price'   => 10,
+                    'quantity'     => 1,
                 ],
             ],
         ]);
@@ -290,7 +290,7 @@ class RequestTypeTest extends TestCase
 
     public function testDepletePoint()
     {
-        $data = new DepletePoint;
+        $data = new DepletePoint();
         $data->phoneNumber = '0912123456';
         $data->point = 10;
 
@@ -298,7 +298,7 @@ class RequestTypeTest extends TestCase
 
         $this->assertEquals($params, [
             'phone_number' => $data->phoneNumber,
-            'point' => $data->point,
+            'point'        => $data->point,
         ]);
     }
 }

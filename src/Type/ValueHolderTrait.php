@@ -5,7 +5,7 @@ namespace CHYP\Partner\Echooss\Voucher\Type;
 trait ValueHolderTrait
 {
     /**
-     * Protected $data
+     * Protected $data.
      *
      * @var array
      */
@@ -15,7 +15,7 @@ trait ValueHolderTrait
      * Is invoked when writing a value to a non-existing or inaccessible property.
      *
      * @param string $varName
-     * @param mixed $value
+     * @param mixed  $value
      */
     public function __set(string $varName, $value)
     {

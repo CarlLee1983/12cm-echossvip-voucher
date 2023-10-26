@@ -15,9 +15,9 @@ class Utils
      */
     public static function camelCase(string $input): string
     {
-        $camelCase = ucwords(str_replace("_", " ", $input));
+        $camelCase = ucwords(str_replace('_', ' ', $input));
 
-        $camelCase = str_replace(" ", "", $camelCase);
+        $camelCase = str_replace(' ', '', $camelCase);
 
         return lcfirst($camelCase);
     }
@@ -44,7 +44,7 @@ class Utils
     public static function validPhoneNumber(string $value)
     {
         if (!preg_match('/^(\+886|0)[9]\d{8}$/', $value)) {
-            throw new RequestTypeException('Invalid Taiwan mobile number. $value:' . $value);
+            throw new RequestTypeException('Invalid Taiwan mobile number. $value:'.$value);
         }
     }
 }

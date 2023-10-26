@@ -9,7 +9,7 @@ class QueryRedeemBatchDetail extends Response
     /**
      * API request.
      *
-     * @var boolean
+     * @var bool
      */
     public bool $success = false;
 
@@ -25,7 +25,7 @@ class QueryRedeemBatchDetail extends Response
         $response = [];
 
         foreach ($details as $detail) {
-            $data = new RedeemBatchDetail;
+            $data = new RedeemBatchDetail();
 
             foreach ($detail as $key => $value) {
                 $key = Utils::camelCase($key);

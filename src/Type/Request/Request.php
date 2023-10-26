@@ -10,7 +10,7 @@ abstract class Request implements RequestInterface
     use ValueHolderTrait;
 
     /**
-     * __construct
+     * __construct.
      */
     public function __construct()
     {

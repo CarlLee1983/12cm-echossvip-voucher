@@ -7,7 +7,7 @@ class UtilTest extends TestCase
 {
     public function testToCamelCase()
     {
-        $originalString = "line_id_to_request";
+        $originalString = 'line_id_to_request';
         $camelCase = Utils::camelCase($originalString);
 
         $this->assertEquals($camelCase, 'lineIdToRequest');
@@ -15,7 +15,7 @@ class UtilTest extends TestCase
 
     public function testToSnakeCase()
     {
-        $originalString = "lineIdToRequest";
+        $originalString = 'lineIdToRequest';
         $snakeCase = Utils::snakeCase($originalString);
 
         $this->assertEquals($snakeCase, 'line_id_to_request');

@@ -11,18 +11,17 @@ class AccumulatePoint extends Response
      */
     public string $message = '';
 
-
     /**
-     * Points Issued This Time
+     * Points Issued This Time.
      *
-     * @var integer
+     * @var int
      */
     public int $point = 0;
 
     /**
      * Current Purchase Amount.
      *
-     * @var integer|null
+     * @var int|null
      */
     public ?int $amount;
 }

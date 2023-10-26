@@ -18,7 +18,7 @@ class DepletePoint extends Request
     /**
      * Required, Redemption Points (Amount of Cash Discount).
      *
-     * @var integer
+     * @var int
      */
     public int $point = 0;
 }

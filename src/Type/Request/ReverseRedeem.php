@@ -2,8 +2,6 @@
 
 namespace CHYP\Partner\Echooss\Voucher\Type\Request;
 
-use CHYP\Partner\Echooss\Voucher\Utils;
-
 class ReverseRedeem extends Request
 {
     use PhoneNumberTrait;
@@ -16,13 +14,13 @@ class ReverseRedeem extends Request
     public string $lindId;
 
     /**
-     * Required, Redemption Coupon Type
+     * Required, Redemption Coupon Type.
      *
      * Type 1 represents coupon.
      * Type 2 represents Membership Welcome Voucher.
      * Type 3 represents Non-Member Product Voucher.
      *
-     * @var integer
+     * @var int
      */
     public int $type = 1;
 
@@ -36,7 +34,7 @@ class ReverseRedeem extends Request
     /**
      * Required, Reversal Redemption Quantity.
      *
-     * @var integer
+     * @var int
      */
     public int $deductCount = 1;
 }

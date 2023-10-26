@@ -18,7 +18,7 @@ class AccumulatePoint extends Request
     /**
      * Required, Purchase Amount.
      *
-     * @var integer
+     * @var int
      */
     public int $amount = 0;
 

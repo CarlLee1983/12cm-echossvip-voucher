@@ -7,7 +7,7 @@ class QueryRedeemBatch extends Response
     /**
      * API request.
      *
-     * @var boolean
+     * @var bool
      */
     public bool $success = false;
 

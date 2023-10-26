@@ -7,7 +7,7 @@ class VoucherImage extends Response
     /**
      * Image ID.
      *
-     * @var integer
+     * @var int
      */
     public int $id;
 
@@ -21,14 +21,14 @@ class VoucherImage extends Response
     /**
      * Order of Images.
      *
-     * @var integer
+     * @var int
      */
     public ?int $order;
 
     /**
-     * __construct
+     * __construct.
      *
-     * @param int $id
+     * @param int    $id
      * @param string $url
      * @param string $order
      */

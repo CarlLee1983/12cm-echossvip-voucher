@@ -2,8 +2,8 @@
 
 namespace CHYP\Partner\Echooss\Voucher\Type\Response;
 
-use DateTimeImmutable;
 use CHYP\Partner\Echooss\Voucher\Exception\ResponseTypeException;
+use DateTimeImmutable;
 
 class Voucher extends Response
 {
@@ -24,42 +24,42 @@ class Voucher extends Response
     /**
      * Voucher total quantity.
      *
-     * @var integer
+     * @var int
      */
     public int $totalCount;
 
     /**
      * Remaining unused quantity.
      *
-     * @var integer
+     * @var int
      */
     public int $unusableCount;
 
     /**
      * Redeemable quantity.
      *
-     * @var integer
+     * @var int
      */
     public int $redeemableCount;
 
     /**
      * Reversible redeemable quantity.
      *
-     * @var integer
+     * @var int
      */
     public int $reverseRedeemableCount;
 
     /**
      * Voidable quantity.
      *
-     * @var integer
+     * @var int
      */
     public int $voidableCount;
 
     /**
      * Reversible voidable quantity.
      *
-     * @var integer
+     * @var int
      */
     public int $reverseVoidableCount;
 
@@ -80,7 +80,7 @@ class Voucher extends Response
      * Type 4 represents Birthday Bonus Points.
      * Type 5 represents Gift Package Bundle.
      *
-     * @var integer
+     * @var int
      */
     public int $couponType;
 
@@ -92,7 +92,7 @@ class Voucher extends Response
      * 2 represents Specified Period.
      *
      *
-     * @var integer
+     * @var int
      */
     public int $periodSales;
 
@@ -111,9 +111,9 @@ class Voucher extends Response
      * Type 1 is coupon.
      * Type 2 is voucher.
      *
-     * @param integer $value
+     * @param int $value
      *
-     * @return integer
+     * @return int
      */
     public function type(int $value): int
     {
