@@ -2,14 +2,14 @@
 
 namespace CHYP\Partner\Echooss\Voucher\Type;
 
-use CHYP\Partner\Echooss\Voucher\Type\Response\ResponseInterface;
 use CHYP\Partner\Echooss\Voucher\Type\Response\AccumulatePoint;
-use CHYP\Partner\Echooss\Voucher\Type\Response\DepletePoint;
 use CHYP\Partner\Echooss\Voucher\Type\Response\CreateRedeemBatch;
+use CHYP\Partner\Echooss\Voucher\Type\Response\DepletePoint;
 use CHYP\Partner\Echooss\Voucher\Type\Response\ExecuteRedeemBatch;
 use CHYP\Partner\Echooss\Voucher\Type\Response\FreezeRedeemBatch;
 use CHYP\Partner\Echooss\Voucher\Type\Response\QueryRedeemBatch;
 use CHYP\Partner\Echooss\Voucher\Type\Response\QueryRedeemBatchDetail;
+use CHYP\Partner\Echooss\Voucher\Type\Response\ResponseInterface;
 use CHYP\Partner\Echooss\Voucher\Type\Response\ReverseRedeem;
 use CHYP\Partner\Echooss\Voucher\Type\Response\UpdateRedeemBatch;
 use CHYP\Partner\Echooss\Voucher\Type\Response\Voucher;
@@ -31,23 +31,23 @@ class Response
      * @var array
      */
     protected array $mapType = [
-        'voucherList' => 'voucherList',
-        'createRedeemBatch' => 'createRedeemBatch',
-        'queryRedeemBatch' => 'queryRedeemBatch',
+        'voucherList'            => 'voucherList',
+        'createRedeemBatch'      => 'createRedeemBatch',
+        'queryRedeemBatch'       => 'queryRedeemBatch',
         'queryRedeemBatchDetail' => 'queryRedeemBatchDetail',
-        'freezeRedeemBatch' => 'freezeRedeemBatch',
-        'updateRedeemBatch' => 'updateRedeemBatch',
-        'executeRedeemBatch' => 'executeRedeemBatch',
-        'reverseRedeem' => 'reverseRedeem',
-        'accumulatePoint' => 'accumulatePoint',
-        'depletePoint' => 'depletePoint',
+        'freezeRedeemBatch'      => 'freezeRedeemBatch',
+        'updateRedeemBatch'      => 'updateRedeemBatch',
+        'executeRedeemBatch'     => 'executeRedeemBatch',
+        'reverseRedeem'          => 'reverseRedeem',
+        'accumulatePoint'        => 'accumulatePoint',
+        'depletePoint'           => 'depletePoint',
     ];
 
     /**
-     * __construct
+     * __construct.
      *
      * @param string $type
-     * @param array $params
+     * @param array  $params
      */
     public function __construct(string $type, array $params)
     {
@@ -71,7 +71,7 @@ class Response
      * Mapping object value.
      *
      * @param object $response
-     * @param array $params
+     * @param array  $params
      *
      * @return \CHYP\Partner\Echooss\Voucher\Type\Response\ResponseInterface
      */
@@ -96,10 +96,10 @@ class Response
         $data = [];
 
         foreach ($this->params as $row) {
-            $data[] = $this->mappingValue(new Voucher, $row);
+            $data[] = $this->mappingValue(new Voucher(), $row);
         }
 
-        return $this->mappingValue(new VoucherList, ['data' => $data]);
+        return $this->mappingValue(new VoucherList(), ['data' => $data]);
     }
 
     /**
@@ -109,7 +109,7 @@ class Response
      */
     public function createRedeemBatch(): CreateRedeemBatch
     {
-        return $this->mappingValue(new CreateRedeemBatch, $this->params);
+        return $this->mappingValue(new CreateRedeemBatch(), $this->params);
     }
 
     /**
@@ -119,7 +119,7 @@ class Response
      */
     public function queryRedeemBatch(): QueryRedeemBatch
     {
-        return $this->mappingValue(new QueryRedeemBatch, $this->params);
+        return $this->mappingValue(new QueryRedeemBatch(), $this->params);
     }
 
     /**
@@ -129,7 +129,7 @@ class Response
      */
     public function queryRedeemBatchDetail(): QueryRedeemBatchDetail
     {
-        return $this->mappingValue(new QueryRedeemBatchDetail, $this->params);
+        return $this->mappingValue(new QueryRedeemBatchDetail(), $this->params);
     }
 
     /**
@@ -139,7 +139,7 @@ class Response
      */
     public function freezeRedeemBatch(): FreezeRedeemBatch
     {
-        return $this->mappingValue(new FreezeRedeemBatch, $this->params);
+        return $this->mappingValue(new FreezeRedeemBatch(), $this->params);
     }
 
     /**
@@ -149,7 +149,7 @@ class Response
      */
     public function updateRedeemBatch(): UpdateRedeemBatch
     {
-        return $this->mappingValue(new UpdateRedeemBatch, $this->params);
+        return $this->mappingValue(new UpdateRedeemBatch(), $this->params);
     }
 
     /**
@@ -159,7 +159,7 @@ class Response
      */
     public function executeRedeemBatch(): ExecuteRedeemBatch
     {
-        return $this->mappingValue(new ExecuteRedeemBatch, $this->params);
+        return $this->mappingValue(new ExecuteRedeemBatch(), $this->params);
     }
 
     /**
@@ -169,7 +169,7 @@ class Response
      */
     public function reverseRedeem(): ReverseRedeem
     {
-        return $this->mappingValue(new ReverseRedeem, $this->params);
+        return $this->mappingValue(new ReverseRedeem(), $this->params);
     }
 
     /**
@@ -179,7 +179,7 @@ class Response
      */
     public function accumulatePoint(): AccumulatePoint
     {
-        return $this->mappingValue(new AccumulatePoint, $this->params);
+        return $this->mappingValue(new AccumulatePoint(), $this->params);
     }
 
     /**
@@ -189,6 +189,6 @@ class Response
      */
     public function depletePoint(): DepletePoint
     {
-        return $this->mappingValue(new DepletePoint, $this->params);
+        return $this->mappingValue(new DepletePoint(), $this->params);
     }
 }

@@ -27,7 +27,7 @@ class FreezeRedeemBatch extends Request
     /**
      * Required, Freeze Duration in Minutes. Limited to 1-60.
      *
-     * @param integer $mins
+     * @param int $mins
      *
      * @return int
      */

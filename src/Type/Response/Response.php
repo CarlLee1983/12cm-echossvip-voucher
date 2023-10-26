@@ -16,7 +16,7 @@ abstract class Response implements ResponseInterface
     protected string $className;
 
     /**
-     * __construct
+     * __construct.
      */
     public function __construct()
     {

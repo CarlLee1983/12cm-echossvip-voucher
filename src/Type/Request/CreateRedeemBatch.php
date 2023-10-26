@@ -4,7 +4,8 @@ namespace CHYP\Partner\Echooss\Voucher\Type\Request;
 
 class CreateRedeemBatch extends Request
 {
-    use StoreParamsTrait, PhoneNumberTrait;
+    use StoreParamsTrait;
+    use PhoneNumberTrait;
 
     /**
      * Protected data.

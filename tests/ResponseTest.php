@@ -35,7 +35,7 @@ class ResponseTest extends TestCase
         $response = json_decode($response, true);
 
         $data = (new CHYP\Partner\Echooss\Voucher\Type\Response('voucherList', $response['data'] ?? []))->format();
-        $data = (new CHYP\Partner\Echooss\Voucher\Core)->deepDeconstruction($data->toArray());
+        $data = (new CHYP\Partner\Echooss\Voucher\Core())->deepDeconstruction($data->toArray());
         $firstVoucher = reset($data);
 
         $this->assertEquals($firstVoucher['voucherHashId'], 'NhYNDyrdzG');

@@ -14,7 +14,7 @@ class RewardsCard
     protected string $apiPrefix = '/api/pos';
 
     /**
-     * __construct
+     * __construct.
      *
      * @param Core $core
      */
@@ -28,7 +28,7 @@ class RewardsCard
      * Do request.
      *
      * @param string $action
-     * @param array $data
+     * @param array  $data
      *
      * @return \CHYP\Partner\Echooss\Voucher\Type\Response
      */
@@ -54,7 +54,7 @@ class RewardsCard
     {
         $response = $this->core->request(
             'POST',
-            $this->apiPrefix . '/mps-card-send-point',
+            $this->apiPrefix.'/mps-card-send-point',
             [
                 'data' => $data,
             ]
@@ -74,7 +74,7 @@ class RewardsCard
     {
         $response = $this->core->request(
             'POST',
-            $this->apiPrefix . '/mps-card-deduct-point',
+            $this->apiPrefix.'/mps-card-deduct-point',
             [
                 'data' => $data,
             ]

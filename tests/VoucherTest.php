@@ -24,7 +24,7 @@ class VoucherTest extends TestCase
      */
     protected function setUp(): void
     {
-        $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+        $dotenv = Dotenv::createImmutable(__DIR__.'/../');
         $dotenv->safeLoad();
 
         $this->core = new Core(true);
@@ -36,7 +36,7 @@ class VoucherTest extends TestCase
     {
         $this->core->setToken('');
 
-        $param = new VoucherList;
+        $param = new VoucherList();
         $param->phoneNumber = '0912123456';
 
         $this->expectException(ResponseTypeException::class);
@@ -47,8 +47,8 @@ class VoucherTest extends TestCase
 
     public function testRequestVoucherListUserNotFoundByLineId()
     {
-        # line
-        $param = new VoucherList;
+        // line
+        $param = new VoucherList();
         $param->lineId = 'aaaaa';
 
         $this->expectException(ResponseTypeException::class);
@@ -60,7 +60,7 @@ class VoucherTest extends TestCase
 
     public function testRequestVoucherListUserNotFoundByPhoneNumber()
     {
-        $param = new VoucherList;
+        $param = new VoucherList();
         $param->phoneNumber = '0912123456';
 
         $this->expectException(ResponseTypeException::class);
@@ -83,7 +83,7 @@ class VoucherTest extends TestCase
 
     public function additionCreateRedeemBatchProvider()
     {
-        $param = new CreateRedeemBatch;
+        $param = new CreateRedeemBatch();
         $param->phoneNumber = '0912123456';
         $param->storeOpenId = '1111';
         $param->posMacUid = '22222';
@@ -100,7 +100,7 @@ class VoucherTest extends TestCase
     {
         $faker = Faker\Factory::create();
 
-        $param = new QueryRedeemBatch;
+        $param = new QueryRedeemBatch();
         $param->batchToken = $faker->text(10);
         $param->storeOpenId = $faker->text(10);
         $param->posMacUid = $faker->text(10);
@@ -115,7 +115,7 @@ class VoucherTest extends TestCase
     {
         $faker = Faker\Factory::create();
 
-        $param = new QueryRedeemBatchDetail;
+        $param = new QueryRedeemBatchDetail();
         $param->batchUuid = $faker->text(10);
         $param->storeOpenId = $faker->text(10);
         $param->posMacUid = $faker->text(10);
@@ -128,7 +128,7 @@ class VoucherTest extends TestCase
 
     public function testRequestFreezeRedeemBatchOverMins()
     {
-        $param = new FreezeRedeemBatch;
+        $param = new FreezeRedeemBatch();
 
         $this->expectException(RequestTypeException::class);
         $this->expectExceptionMessage('The freezeMins must be less than or equal to 60');
@@ -138,7 +138,7 @@ class VoucherTest extends TestCase
 
     public function testRequestFreezeRedeemBatchLessMins()
     {
-        $param = new FreezeRedeemBatch;
+        $param = new FreezeRedeemBatch();
 
         $this->expectException(RequestTypeException::class);
         $this->expectExceptionMessage('The freezeMins must be less than or equal to 60');
@@ -150,7 +150,7 @@ class VoucherTest extends TestCase
     {
         $faker = Faker\Factory::create();
 
-        $param = new FreezeRedeemBatch;
+        $param = new FreezeRedeemBatch();
         $param->batchUuid = $faker->text(10);
         $param->storeOpenId = $faker->text(10);
         $param->posMacUid = $faker->text(10);
@@ -166,7 +166,7 @@ class VoucherTest extends TestCase
     {
         $faker = Faker\Factory::create();
 
-        $param = new UpdateRedeemBatch;
+        $param = new UpdateRedeemBatch();
         $param->batchUuid = 'ee11';
         $param->storeOpenId = $faker->text(10);
         $param->posMacUid = $faker->text(10);
@@ -175,7 +175,7 @@ class VoucherTest extends TestCase
         ];
 
         $this->expectException(ResponseTypeException::class);
-        $this->expectExceptionMessage('{"data":{"success":false,"message":"not support for voucher ' . $param->batchUuid . '"}}');
+        $this->expectExceptionMessage('{"data":{"success":false,"message":"not support for voucher '.$param->batchUuid.'"}}');
 
         $this->core->voucher('updateRedeemBatch', $param);
     }
@@ -184,7 +184,7 @@ class VoucherTest extends TestCase
     {
         $faker = Faker\Factory::create();
 
-        $param = new ExecuteRedeemBatch;
+        $param = new ExecuteRedeemBatch();
         $param->batchUuid = $faker->text(10);
         $param->storeOpenId = $faker->text(10);
         $param->posMacUid = $faker->text(10);
@@ -211,7 +211,7 @@ class VoucherTest extends TestCase
         $provider = [];
         $faker = Faker\Factory::create();
 
-        $param = new ReverseRedeem;
+        $param = new ReverseRedeem();
         $param->lineId = $faker->text(10);
         $param->type = 1;
         $param->voucherHashId = $faker->text(10);
@@ -221,7 +221,7 @@ class VoucherTest extends TestCase
             $param, '{"data":{"message":"The selected data.0.line_id is invalid."}}',
         ];
 
-        $param = new ReverseRedeem;
+        $param = new ReverseRedeem();
         $param->type = 1;
         $param->voucherHashId = $faker->text(10);
         $param->deductCount = 1;
@@ -230,7 +230,7 @@ class VoucherTest extends TestCase
             $param, '{"message":"Parameters Error","errors":"Thie line_id or phone_number field is required"}',
         ];
 
-        $param = new ReverseRedeem;
+        $param = new ReverseRedeem();
         $param->type = 3;
         $param->voucherHashId = $faker->text(10);
         $param->deductCount = 1;

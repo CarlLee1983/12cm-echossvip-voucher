@@ -17,7 +17,7 @@ class RewardsCardTest extends TestCase
      */
     protected function setUp(): void
     {
-        $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+        $dotenv = Dotenv::createImmutable(__DIR__.'/../');
         $dotenv->safeLoad();
 
         $this->core = (new Core(true))->setToken($_ENV['REWARDS_CARD_TOKEN']);
@@ -25,11 +25,11 @@ class RewardsCardTest extends TestCase
 
     public function testRewardsCardAccumulatePointTest()
     {
-        $param = new AccumulatePoint;
+        $param = new AccumulatePoint();
         $param->phoneNumber = '0912123456';
         $param->amount = 100;
         $param->details = [
-            (new AccumulatePointDetail('test', 100, 1)),
+            new AccumulatePointDetail('test', 100, 1),
         ];
 
         $this->expectException(ResponseTypeException::class);
@@ -40,7 +40,7 @@ class RewardsCardTest extends TestCase
 
     public function testRewardsCardDepletePointTest()
     {
-        $param = new DepletePoint;
+        $param = new DepletePoint();
         $param->phoneNumber = '0912123456';
         $param->point = 1;
 

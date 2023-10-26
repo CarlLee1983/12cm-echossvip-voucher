@@ -2,22 +2,21 @@
 
 namespace CHYP\Partner\Echooss\Voucher;
 
+use CHYP\Partner\Echooss\Voucher\Exception\RequestTypeException;
+use CHYP\Partner\Echooss\Voucher\Exception\ResponseTypeException;
 use CHYP\Partner\Echooss\Voucher\Type\Request\RequestInterface;
+use CHYP\Partner\Echooss\Voucher\Type\Response;
 use CHYP\Partner\Echooss\Voucher\Type\Response\ResponseInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface as PsrResponse;
-use CHYP\Partner\Echooss\Voucher\Exception\RequestTypeException;
-use CHYP\Partner\Echooss\Voucher\Exception\ResponseTypeException;
-use CHYP\Partner\Echooss\Voucher\Type\Response;
-
 
 class Core
 {
     /**
      * Sandbox model.
      *
-     * @var boolean
+     * @var bool
      */
     public bool $isSandBox;
 
@@ -29,9 +28,9 @@ class Core
     public string $apiHost;
 
     /**
-     * __construct
+     * __construct.
      *
-     * @param boolean $isSandBox
+     * @param bool $isSandBox
      */
     public function __construct(bool $isSandBox = false)
     {
@@ -67,19 +66,19 @@ class Core
      *
      * @param string $method
      * @param string $path
-     * @param array $content
+     * @param array  $content
      *
      * @return Psr\Http\Message\ResponseInterface
      */
     public function request(string $method, string $path, array $content = []): PsrResponse
     {
         try {
-            return (new Client)->request(
+            return (new Client())->request(
                 $method,
-                $this->apiHost . $path,
+                $this->apiHost.$path,
                 [
                     'headers' => [
-                        'Authorization' => 'Bearer ' . $this->getToken(),
+                        'Authorization' => 'Bearer '.$this->getToken(),
                     ],
                     'json' => $content,
                 ]
@@ -98,21 +97,21 @@ class Core
     /**
      * Echoss VIP Voucher api request.
      *
-     * @param string $action
+     * @param string                                                      $action
      * @param \CHYP\Partner\Echooss\Voucher\Type\Request\RequestInterface $param
      *
      * @return \CHYP\Partner\Echooss\Voucher\Type\Response
      */
     public function voucher(string $action, RequestInterface $param): Response
     {
-        return (new Voucher($this))->do($action,  $this->deepDeconstruction($param));
+        return (new Voucher($this))->do($action, $this->deepDeconstruction($param));
     }
 
     /**
      * Echoss VIP Member Rewards Card.
      *
      * @param string $action
-     * @param array $param
+     * @param array  $param
      *
      * @return \CHYP\Partner\Echooss\Voucher\Type\Response
      */

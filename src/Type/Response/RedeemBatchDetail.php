@@ -11,14 +11,14 @@ class RedeemBatchDetail
      * Type 2 represents Membership Welcome Voucher.
      * Type 3 represents not Membership Welcome Voucher.
      *
-     * @var integer
+     * @var int
      */
     public int $redeemType;
 
     /**
      * Redeem quantity.
      *
-     * @var integer
+     * @var int
      */
     public int $redeemQuantity;
 
@@ -46,7 +46,7 @@ class RedeemBatchDetail
     /**
      * Coupon type.
      *
-     * @var integer|null
+     * @var int|null
      */
     public ?int $couponType;
 

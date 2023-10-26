@@ -2,8 +2,8 @@
 
 namespace CHYP\Partner\Echooss\Voucher;
 
-use CHYP\Partner\Echooss\Voucher\Type\Response;
 use CHYP\Partner\Echooss\Voucher\Exception\RequestTypeException;
+use CHYP\Partner\Echooss\Voucher\Type\Response;
 
 class Voucher
 {
@@ -34,18 +34,18 @@ class Voucher
      * @var array
      */
     protected array $requestPath = [
-        'voucherList' => '/voucher-list',
-        'createRedeemBatch' => '/create-redeem-batch',
-        'queryRedeemBatch' => '/query-redeem-batch',
+        'voucherList'            => '/voucher-list',
+        'createRedeemBatch'      => '/create-redeem-batch',
+        'queryRedeemBatch'       => '/query-redeem-batch',
         'queryRedeemBatchDetail' => '/query-redeem-batch-detail',
-        'freezeRedeemBatch' => '/freeze-redeem-batch',
-        'updateRedeemBatch' => '/update-redeem-batch',
-        'executeRedeemBatch' => '/execute-redeem-batch',
-        'reverseRedeem' => '/reverse-redeem',
+        'freezeRedeemBatch'      => '/freeze-redeem-batch',
+        'updateRedeemBatch'      => '/update-redeem-batch',
+        'executeRedeemBatch'     => '/execute-redeem-batch',
+        'reverseRedeem'          => '/reverse-redeem',
     ];
 
     /**
-     * __construct
+     * __construct.
      *
      * @param Core $core
      */
@@ -64,7 +64,7 @@ class Voucher
      * Call api by action.
      *
      * @param string $action
-     * @param array $param
+     * @param array  $param
      *
      * @return \CHYP\Partner\Echooss\Voucher\Type\Response
      */
@@ -76,7 +76,7 @@ class Voucher
 
         $response = $this->core->request(
             'POST',
-            $this->apiPrefix . $this->requestPath[$action],
+            $this->apiPrefix.$this->requestPath[$action],
             $param
         );
 

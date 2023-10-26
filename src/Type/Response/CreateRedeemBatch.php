@@ -7,7 +7,7 @@ class CreateRedeemBatch extends Response
     /**
      * API request.
      *
-     * @var boolean
+     * @var bool
      */
     public bool $success = false;
 
@@ -19,7 +19,7 @@ class CreateRedeemBatch extends Response
     public string $message;
 
     /**
-     * Token
+     * Token.
      *
      * @var string
      */

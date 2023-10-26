@@ -7,25 +7,25 @@ use CHYP\Partner\Echooss\Voucher\Exception\RequestTypeException;
 class Redeem extends Request
 {
     /**
-     * Required, Voucher Hash ID
+     * Required, Voucher Hash ID.
      *
      * @var string
      */
     public string $redeemId;
 
     /**
-     * Required, Redeemable Quantity
+     * Required, Redeemable Quantity.
      *
-     * @var integer
+     * @var int
      */
     public int $redeemQuantity;
 
     /**
-     * __construct
+     * __construct.
      *
-     * @param integer $redeemId
+     * @param int    $redeemId
      * @param string $redeemId
-     * @param integer $redeemQuantity
+     * @param int    $redeemQuantity
      */
     public function __construct(int $redeemType = 1, string $redeemId = '', int $redeemQuantity = 1)
     {
@@ -40,7 +40,7 @@ class Redeem extends Request
      * 1 represents member discount coupon.
      * 2 represents member product voucher.
      *
-     * @var integer
+     * @var int
      */
     public function redeemType(int $type)
     {

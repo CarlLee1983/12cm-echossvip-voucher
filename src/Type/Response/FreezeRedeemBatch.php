@@ -7,7 +7,7 @@ class FreezeRedeemBatch extends Response
     /**
      * API request.
      *
-     * @var boolean
+     * @var bool
      */
     public bool $success = false;
 
@@ -24,7 +24,7 @@ class FreezeRedeemBatch extends Response
      * The 0 is unfreeze.
      * The 1 is froze.
      *
-     * @var integer
+     * @var int
      */
     public int $batchFreeze;
 }
