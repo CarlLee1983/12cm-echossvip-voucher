@@ -14,72 +14,64 @@ class RewardsCard
     protected string $apiPrefix = '/api/pos';
 
     /**
-     * __construct.
+     * Maps action names to their specific API endpoint paths.
      *
-     * @param Core $core
+     * @var array<string, string>
+     */
+    protected array $requestPath = [
+        'accumulatePoint' => '/mps-card-send-point',
+        'depletePoint'    => '/mps-card-deduct-point',
+    ];
+
+    /**
+     * RewardsCard constructor.
+     *
+     * @param \CHYP\Partner\Echooss\Voucher\Core $core The Core instance for API communication.
      */
     public function __construct(Core $core)
     {
         $this->core = $core;
-        $this->core->apiHost = 'https://stagevip-api.12cm.com.tw';
     }
 
     /**
-     * Do request.
+     * Perform a rewards card API request.
      *
-     * @param string $action
-     * @param array  $data
+     * This method centralizes API requests for rewards card actions. It uses the `requestPath`
+     * map to find the correct API endpoint for the given action.
      *
-     * @return \CHYP\Partner\Echooss\Voucher\Type\Response
+     * The response handling is generalized:
+     * - For 'depletePoint', the entire JSON decoded response is used.
+     * - For other actions (e.g., 'accumulatePoint'), it attempts to use the 'data' key from
+     *   the JSON decoded response, falling back to the entire response if 'data' is not present.
+     *
+     * @param string $action The API action to perform (e.g., 'accumulatePoint', 'depletePoint').
+     * @param array  $data   The data payload for the request.
+     *
+     * @return \CHYP\Partner\Echooss\Voucher\Type\Response The API response.
+     * @throws \CHYP\Partner\Echooss\Voucher\Exception\RequestTypeException If the action is not defined in `requestPath`.
      */
     public function do(string $action, array $data): Response
     {
-        if ($action == 'accumulatePoint') {
-            return $this->accumulate($data);
+        if (!array_key_exists($action, $this->requestPath)) {
+            throw new \CHYP\Partner\Echooss\Voucher\Exception\RequestTypeException(
+                'Request action [' . $action . '] not exists in RewardsCard.'
+            );
         }
 
-        if ($action == 'depletePoint') {
-            return $this->deplete($data);
+        $apiPath = $this->apiPrefix . $this->requestPath[$action];
+
+        $response = $this->core->request(
+            'POST',
+            $apiPath,
+            ['data' => $data]
+        );
+
+        $responseData = json_decode($response->getBody()->getContents(), true);
+
+        if ($action === 'depletePoint') {
+            return new Response($action, $responseData ?? []);
         }
-    }
-
-    /**
-     * Echoss VIP Member Loyalty Card: New Purchase Added (Points Earned for Minimum Spending.
-     *
-     * @param array $data
-     *
-     * @return \CHYP\Partner\Echooss\Voucher\Type\Response
-     */
-    public function accumulate(array $data): Response
-    {
-        $response = $this->core->request(
-            'POST',
-            $this->apiPrefix.'/mps-card-send-point',
-            [
-                'data' => $data,
-            ]
-        );
-
-        return new Response('accumulatePoint', json_decode($response->getBody(), true)['data'] ?? []);
-    }
-
-    /**
-     * Deduct Echoss VIP Member Loyalty Card Points.
-     *
-     * @param array $data
-     *
-     * @return \CHYP\Partner\Echooss\Voucher\Type\Response
-     */
-    public function deplete(array $data): Response
-    {
-        $response = $this->core->request(
-            'POST',
-            $this->apiPrefix.'/mps-card-deduct-point',
-            [
-                'data' => $data,
-            ]
-        );
-
-        return new Response('depletePoint', json_decode($response->getBody(), true));
+        
+        return new Response($action, $responseData['data'] ?? $responseData ?? []);
     }
 }

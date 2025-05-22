@@ -8,30 +8,16 @@ use CHYP\Partner\Echooss\Voucher\Type\Response;
 class Voucher
 {
     /**
-     * Production model host.
-     *
-     * @var string
-     */
-    private $prodHost = 'https://service.12cm.com.tw';
-
-    /**
-     * Sandbox model host.
-     *
-     * @var string
-     */
-    private $devHost = 'https://testservice.12cm.com.tw';
-
-    /**
-     * Request path prefix.
+     * Request path prefix for voucher APIs.
      *
      * @var string
      */
     protected string $apiPrefix = '/pos_gateway/api';
 
     /**
-     * Request path.
+     * Maps action names to their specific API endpoint paths for voucher services.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected array $requestPath = [
         'voucherList'            => '/voucher-list',
@@ -45,41 +31,40 @@ class Voucher
     ];
 
     /**
-     * __construct.
+     * Voucher constructor.
      *
-     * @param Core $core
+     * @param \CHYP\Partner\Echooss\Voucher\Core $core The Core instance for API communication.
      */
     public function __construct(Core $core)
     {
         $this->core = $core;
-
-        if ($this->core->isSandBox) {
-            $this->core->apiHost = $this->devHost;
-        } else {
-            $this->core->apiHost = $this->prodHost;
-        }
     }
 
     /**
-     * Call api by action.
+     * Perform a voucher API request.
      *
-     * @param string $action
-     * @param array  $param
+     * This method centralizes API requests for voucher actions. It uses the `requestPath`
+     * map to find the correct API endpoint for the given action. The response data
+     * is typically extracted from the 'data' key of the JSON decoded response.
      *
-     * @return \CHYP\Partner\Echooss\Voucher\Type\Response
+     * @param string $action The API action to perform (e.g., 'voucherList', 'createRedeemBatch').
+     * @param array  $param  The data payload for the request.
+     *
+     * @return \CHYP\Partner\Echooss\Voucher\Type\Response The API response.
+     * @throws \CHYP\Partner\Echooss\Voucher\Exception\RequestTypeException If the action is not defined in `requestPath`.
      */
     public function do(string $action, array $param): Response
     {
         if (!array_key_exists($action, $this->requestPath)) {
-            throw new RequestTypeException('Request action not exists.');
+            throw new RequestTypeException('Request action [' . $action . '] not exists in Voucher.');
         }
 
         $response = $this->core->request(
             'POST',
-            $this->apiPrefix.$this->requestPath[$action],
+            $this->apiPrefix . $this->requestPath[$action],
             $param
         );
 
-        return new Response($action, json_decode($response->getBody(), true)['data'] ?? []);
+        return new Response($action, json_decode($response->getBody()->getContents(), true)['data'] ?? []);
     }
 }
