@@ -8,6 +8,90 @@
 composer require chyp-partner-api-sdk/echoss-voucher
 ```
 
+## Laravel 整合
+
+### 自動發現
+
+如果你使用 Laravel 5.5 以上版本，Service Provider 與 Facade 會自動註冊，無需額外設定。
+
+### 發佈配置檔案
+
+```bash
+php artisan vendor:publish --tag=echoss-voucher-config
+```
+
+這會在 `config/echoss-voucher.php` 建立配置檔案。
+
+### 環境變數設定
+
+在 `.env` 檔案中加入以下設定：
+
+```env
+ECHOSS_SANDBOX=false
+ECHOSS_TOKEN=your-api-token
+ECHOSS_TIMEOUT=10.0
+```
+
+### 使用 Facade
+
+```php
+use CHYP\Partner\Echooss\Voucher\Laravel\Facades\EchossVoucher;
+use CHYP\Partner\Echooss\Voucher\Type\Request\VoucherList;
+
+// 設定 Token（如果未在配置中設定）
+EchossVoucher::setToken('your-token');
+
+// 查詢 Voucher 列表
+$request = new VoucherList();
+$request->phoneNumber = '0912xxxxxx';
+
+$response = EchossVoucher::voucher('voucherList', $request);
+$vouchers = $response->data;
+
+// 使用 Rewards Card
+$response = EchossVoucher::rewardsCard('accumulatePoint', [
+    ['phone_number' => '0912345678', 'point' => 100]
+]);
+```
+
+### 依賴注入
+
+你也可以透過依賴注入取得 Core 實例：
+
+```php
+use CHYP\Partner\Echooss\Voucher\Core;
+use CHYP\Partner\Echooss\Voucher\Type\Request\VoucherList;
+
+class VoucherController extends Controller
+{
+    public function index(Core $echoss)
+    {
+        $request = new VoucherList();
+        $request->phoneNumber = '0912xxxxxx';
+
+        return $echoss->voucher('voucherList', $request);
+    }
+}
+```
+
+### 手動註冊（Laravel 5.4 或更早版本）
+
+如果你使用 Laravel 5.4 或更早版本，請手動在 `config/app.php` 中加入：
+
+```php
+'providers' => [
+    // ...
+    CHYP\Partner\Echooss\Voucher\Laravel\EchossVoucherServiceProvider::class,
+],
+
+'aliases' => [
+    // ...
+    'EchossVoucher' => CHYP\Partner\Echooss\Voucher\Laravel\Facades\EchossVoucher::class,
+],
+```
+
+---
+
 ## 快速開始
 
 ```php
