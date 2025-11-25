@@ -37,7 +37,7 @@ class UtilTest extends TestCase
         Utils::validPhoneNumber('0912123456');
         Utils::validPhoneNumber('+886912123456');
 
-        $this->expectException(CHYP\Partner\Echooss\Voucher\Exception\RequestTypeException::class);
+        $this->expectException(\CHYP\Partner\Echooss\Voucher\Exception\RequestTypeException::class);
         Utils::validPhoneNumber('123456789');
     }
 }

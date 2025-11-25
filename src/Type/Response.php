@@ -16,6 +16,27 @@ use CHYP\Partner\Echooss\Voucher\Type\Response\Voucher;
 use CHYP\Partner\Echooss\Voucher\Type\Response\VoucherList;
 use CHYP\Partner\Echooss\Voucher\Utils;
 
+/**
+ * Legacy Response formatter class.
+ *
+ * @deprecated 此類別已被棄用，請改用 {@see ResponseHydrator} 搭配 {@see ResponseFactory}。
+ *             此類別違反單一職責原則 (SRP)，因為它同時負責資料持有和格式化轉換。
+ *             此類別將在未來版本中移除。
+ *
+ *             遷移範例：
+ *             ```php
+ *             // 舊的用法 (deprecated)
+ *             $response = new Response('voucherList', $rawData);
+ *             $formatted = $response->format();
+ *
+ *             // 新的用法 (recommended)
+ *             $response = $core->voucher('voucherList', $param);
+ *             // $response 已經是型別安全的 VoucherList 物件
+ *             ```
+ *
+ * @see \CHYP\Partner\Echooss\Voucher\Application\Hydrator\ResponseHydrator
+ * @see \CHYP\Partner\Echooss\Voucher\Application\Factory\ResponseFactory
+ */
 class Response
 {
     /**

@@ -5,6 +5,24 @@ namespace CHYP\Partner\Echooss\Voucher;
 use CHYP\Partner\Echooss\Voucher\Exception\RequestTypeException;
 use CHYP\Partner\Echooss\Voucher\Type\Response;
 
+/**
+ * Legacy Voucher HTTP gateway.
+ *
+ * @deprecated 此類別已被棄用，請改用 {@see Core::voucher()} 方法搭配 UseCase 模式。
+ *             此類別將在未來版本中移除。
+ *
+ *             遷移範例：
+ *             ```php
+ *             // 舊的用法 (deprecated)
+ *             $voucher = new Voucher($core);
+ *             $response = $voucher->do('voucherList', ['phone_number' => '0912345678']);
+ *
+ *             // 新的用法 (recommended)
+ *             $param = new VoucherList();
+ *             $param->phoneNumber = '0912345678';
+ *             $response = $core->voucher('voucherList', $param);
+ *             ```
+ */
 class Voucher
 {
     /**

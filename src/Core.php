@@ -4,21 +4,13 @@ namespace CHYP\Partner\Echooss\Voucher;
 
 use CHYP\Partner\Echooss\Voucher\Application\ApiContext;
 use CHYP\Partner\Echooss\Voucher\Application\Assembler\RequestAssembler;
+use CHYP\Partner\Echooss\Voucher\Application\Factory\RewardsCardUseCaseFactory;
 use CHYP\Partner\Echooss\Voucher\Application\Factory\ResponseFactory;
+use CHYP\Partner\Echooss\Voucher\Application\Factory\VoucherUseCaseFactory;
 use CHYP\Partner\Echooss\Voucher\Application\Hydrator\ResponseHydrator;
 use CHYP\Partner\Echooss\Voucher\Application\Service\RewardsCardService;
 use CHYP\Partner\Echooss\Voucher\Application\Service\VoucherService;
-use CHYP\Partner\Echooss\Voucher\Application\UseCase\RewardsCard\AccumulatePointUseCase;
-use CHYP\Partner\Echooss\Voucher\Application\UseCase\RewardsCard\DepletePointUseCase;
 use CHYP\Partner\Echooss\Voucher\Application\UseCase\RewardsCard\RewardsCardUseCaseInterface;
-use CHYP\Partner\Echooss\Voucher\Application\UseCase\Voucher\CreateRedeemBatchUseCase;
-use CHYP\Partner\Echooss\Voucher\Application\UseCase\Voucher\ExecuteRedeemBatchUseCase;
-use CHYP\Partner\Echooss\Voucher\Application\UseCase\Voucher\FreezeRedeemBatchUseCase;
-use CHYP\Partner\Echooss\Voucher\Application\UseCase\Voucher\QueryRedeemBatchDetailUseCase;
-use CHYP\Partner\Echooss\Voucher\Application\UseCase\Voucher\QueryRedeemBatchUseCase;
-use CHYP\Partner\Echooss\Voucher\Application\UseCase\Voucher\ReverseRedeemUseCase;
-use CHYP\Partner\Echooss\Voucher\Application\UseCase\Voucher\UpdateRedeemBatchUseCase;
-use CHYP\Partner\Echooss\Voucher\Application\UseCase\Voucher\VoucherListUseCase;
 use CHYP\Partner\Echooss\Voucher\Application\UseCase\Voucher\VoucherUseCaseInterface;
 use CHYP\Partner\Echooss\Voucher\Exception\RequestTypeException;
 use CHYP\Partner\Echooss\Voucher\Exception\ResponseTypeException;
@@ -39,20 +31,26 @@ class Core
     protected RewardsCardService $rewardsCardService;
     protected RequestAssembler $requestAssembler;
     protected ClientInterface $httpClient;
+    protected VoucherUseCaseFactory $voucherUseCaseFactory;
+    protected RewardsCardUseCaseFactory $rewardsCardUseCaseFactory;
 
     /**
-     * @param boolean                 $isSandBox          Use sandbox endpoints.
-     * @param ApiContext|null         $context            Pre-configured API context.
-     * @param ClientInterface|null    $httpClient         Custom HTTP client.
-     * @param VoucherService|null     $voucherService     Custom voucher service.
-     * @param RewardsCardService|null $rewardsCardService Custom rewards-card service.
+     * @param boolean                        $isSandBox                 Use sandbox endpoints.
+     * @param ApiContext|null                $context                   Pre-configured API context.
+     * @param ClientInterface|null           $httpClient                Custom HTTP client.
+     * @param VoucherService|null            $voucherService            Custom voucher service.
+     * @param RewardsCardService|null        $rewardsCardService        Custom rewards-card service.
+     * @param VoucherUseCaseFactory|null     $voucherUseCaseFactory     Custom voucher use case factory.
+     * @param RewardsCardUseCaseFactory|null $rewardsCardUseCaseFactory Custom rewards-card use case factory.
      */
     public function __construct(
         bool $isSandBox = false,
         ?ApiContext $context = null,
         ?ClientInterface $httpClient = null,
         ?VoucherService $voucherService = null,
-        ?RewardsCardService $rewardsCardService = null
+        ?RewardsCardService $rewardsCardService = null,
+        ?VoucherUseCaseFactory $voucherUseCaseFactory = null,
+        ?RewardsCardUseCaseFactory $rewardsCardUseCaseFactory = null
     ) {
         $this->context = $context ?? new ApiContext($isSandBox);
         $this->requestAssembler = new RequestAssembler();
@@ -72,6 +70,10 @@ class Core
             $this->requestAssembler,
             $responseHydrator
         );
+
+        // 注入 UseCase 工廠，遵守單一職責原則
+        $this->voucherUseCaseFactory = $voucherUseCaseFactory ?? new VoucherUseCaseFactory();
+        $this->rewardsCardUseCaseFactory = $rewardsCardUseCaseFactory ?? new RewardsCardUseCaseFactory();
     }
 
     /**
@@ -158,7 +160,7 @@ class Core
     {
         $useCase = $action instanceof VoucherUseCaseInterface
             ? $action
-            : $this->buildVoucherUseCase($action, $param);
+            : $this->voucherUseCaseFactory->create($action, $param);
 
         return $this->voucherService->handle($useCase);
     }
@@ -177,7 +179,7 @@ class Core
     {
         $useCase = $action instanceof VoucherUseCaseInterface
             ? $action
-            : $this->buildVoucherUseCase($action, $param);
+            : $this->voucherUseCaseFactory->create($action, $param);
 
         $raw = $this->voucherService->requestRaw($useCase);
 
@@ -196,7 +198,7 @@ class Core
     {
         $useCase = $action instanceof RewardsCardUseCaseInterface
             ? $action
-            : $this->buildRewardsCardUseCase($action, $param);
+            : $this->rewardsCardUseCaseFactory->create($action, $param);
 
         return $this->rewardsCardService->handle($useCase);
     }
@@ -215,7 +217,7 @@ class Core
     {
         $useCase = $action instanceof RewardsCardUseCaseInterface
             ? $action
-            : $this->buildRewardsCardUseCase($action, $param);
+            : $this->rewardsCardUseCaseFactory->create($action, $param);
 
         $raw = $this->rewardsCardService->requestRaw($useCase);
 
@@ -235,60 +237,22 @@ class Core
     }
 
     /**
-     * Resolve voucher use case instance.
+     * 取得 Voucher UseCase 工廠實例。
      *
-     * @param string                $action  Action key.
-     * @param RequestInterface|null $request Request DTO.
-     *
-     * @return VoucherUseCaseInterface
+     * @return VoucherUseCaseFactory
      */
-    protected function buildVoucherUseCase(string $action, ?RequestInterface $request): VoucherUseCaseInterface
+    public function getVoucherUseCaseFactory(): VoucherUseCaseFactory
     {
-        $map = [
-            'voucherList'            => VoucherListUseCase::class,
-            'createRedeemBatch'      => CreateRedeemBatchUseCase::class,
-            'queryRedeemBatch'       => QueryRedeemBatchUseCase::class,
-            'queryRedeemBatchDetail' => QueryRedeemBatchDetailUseCase::class,
-            'freezeRedeemBatch'      => FreezeRedeemBatchUseCase::class,
-            'updateRedeemBatch'      => UpdateRedeemBatchUseCase::class,
-            'executeRedeemBatch'     => ExecuteRedeemBatchUseCase::class,
-            'reverseRedeem'          => ReverseRedeemUseCase::class,
-        ];
-
-        if (!isset($map[$action])) {
-            throw new RequestTypeException('Request action not exists.');
-        }
-
-        if (!$request instanceof RequestInterface) {
-            throw new RequestTypeException('Voucher request payload is required.');
-        }
-
-        $className = $map[$action];
-
-        return new $className($request);
+        return $this->voucherUseCaseFactory;
     }
 
     /**
-     * Resolve rewards-card use case instance.
+     * 取得 RewardsCard UseCase 工廠實例。
      *
-     * @param string $action Action key.
-     * @param array  $param  Payload array.
-     *
-     * @return RewardsCardUseCaseInterface
+     * @return RewardsCardUseCaseFactory
      */
-    protected function buildRewardsCardUseCase(string $action, array $param): RewardsCardUseCaseInterface
+    public function getRewardsCardUseCaseFactory(): RewardsCardUseCaseFactory
     {
-        $map = [
-            'accumulatePoint' => AccumulatePointUseCase::class,
-            'depletePoint'    => DepletePointUseCase::class,
-        ];
-
-        if (!isset($map[$action])) {
-            throw new RequestTypeException('Request action not exists.');
-        }
-
-        $className = $map[$action];
-
-        return new $className($param);
+        return $this->rewardsCardUseCaseFactory;
     }
 }

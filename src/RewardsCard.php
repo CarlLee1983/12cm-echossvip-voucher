@@ -4,6 +4,22 @@ namespace CHYP\Partner\Echooss\Voucher;
 
 use CHYP\Partner\Echooss\Voucher\Type\Response;
 
+/**
+ * Legacy RewardsCard HTTP gateway.
+ *
+ * @deprecated 此類別已被棄用，請改用 {@see Core::rewardsCard()} 方法搭配 UseCase 模式。
+ *             此類別將在未來版本中移除。
+ *
+ *             遷移範例：
+ *             ```php
+ *             // 舊的用法 (deprecated)
+ *             $rewardsCard = new RewardsCard($core);
+ *             $response = $rewardsCard->do('accumulatePoint', $data);
+ *
+ *             // 新的用法 (recommended)
+ *             $response = $core->rewardsCard('accumulatePoint', $data);
+ *             ```
+ */
 class RewardsCard
 {
     /**
