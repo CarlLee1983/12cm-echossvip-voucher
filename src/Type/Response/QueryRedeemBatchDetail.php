@@ -14,11 +14,11 @@ class QueryRedeemBatchDetail extends Response
     public bool $success = false;
 
     /**
-     * Redeem batch details.
+     * Convert batch details array into response objects.
      *
-     * @param array $details
+     * @param array $details Detail rows returned by API.
      *
-     * @return array
+     * @return array<\CHYP\Partner\Echooss\Voucher\Type\Response\RedeemBatchDetail>
      */
     public function details(array $details): array
     {

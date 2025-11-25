@@ -25,11 +25,11 @@ class FreezeRedeemBatch extends Request
     ];
 
     /**
-     * Required, Freeze Duration in Minutes. Limited to 1-60.
+     * Required, freeze duration in minutes (1-60).
      *
-     * @param int $mins
+     * @param integer $mins Freeze minutes.
      *
-     * @return int
+     * @return integer Valid minutes.
      */
     public function freezeMins(int $mins): int
     {

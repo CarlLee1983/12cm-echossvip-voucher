@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests;
+
 use CHYP\Partner\Echooss\Voucher\Core;
 use CHYP\Partner\Echooss\Voucher\Exception\ResponseTypeException;
 use CHYP\Partner\Echooss\Voucher\Type\Request\AccumulatePoint;
@@ -17,12 +19,17 @@ class RewardsCardTest extends TestCase
      */
     protected function setUp(): void
     {
-        $dotenv = Dotenv::createImmutable(__DIR__.'/../');
+        $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
         $dotenv->safeLoad();
 
         $this->core = (new Core(true))->setToken($_ENV['REWARDS_CARD_TOKEN']);
     }
 
+    /**
+     * Ensure accumulate point API propagates response exceptions.
+     *
+     * @return void
+     */
     public function testRewardsCardAccumulatePointTest()
     {
         $param = new AccumulatePoint();
@@ -38,6 +45,11 @@ class RewardsCardTest extends TestCase
         $this->core->rewardsCard('accumulatePoint', [$param]);
     }
 
+    /**
+     * Ensure deplete point API propagates response exceptions.
+     *
+     * @return void
+     */
     public function testRewardsCardDepletePointTest()
     {
         $param = new DepletePoint();

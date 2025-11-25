@@ -1,9 +1,14 @@
 <?php
 
+namespace Tests;
+
 use PHPUnit\Framework\TestCase;
 
 class ResponseTest extends TestCase
 {
+    /**
+     * Ensure voucher list response hydrates correctly.
+     */
     public function testVoucherList()
     {
         $response = '{
@@ -41,6 +46,9 @@ class ResponseTest extends TestCase
         $this->assertEquals($firstVoucher['voucherHashId'], 'NhYNDyrdzG');
     }
 
+    /**
+     * Ensure create redeem batch response works.
+     */
     public function testRedeemBatch()
     {
         $response = '{
@@ -59,6 +67,9 @@ class ResponseTest extends TestCase
         $this->assertEquals($data->batchToken, 'SNNL6EgbfLZCVLpN');
     }
 
+    /**
+     * Ensure query redeem batch response works.
+     */
     public function testQueryRedeemBatch()
     {
         $response = '{
@@ -75,6 +86,9 @@ class ResponseTest extends TestCase
         $this->assertEquals($data->batchUuid, 'eLdo-20220926-DTtfhqEoaq');
     }
 
+    /**
+     * Ensure query redeem batch detail response works.
+     */
     public function testQueryRedeemBatchDetail()
     {
         $response = '{
@@ -108,6 +122,9 @@ class ResponseTest extends TestCase
         $this->assertEquals($data->details[0]->termId, 'D9341_A600');
     }
 
+    /**
+     * Ensure freeze redeem batch response works.
+     */
     public function testFreezeRedeemBatch()
     {
         $response = '{
@@ -126,6 +143,9 @@ class ResponseTest extends TestCase
         $this->assertEquals($data->batchFreeze, 1);
     }
 
+    /**
+     * Ensure update redeem batch response works.
+     */
     public function testUpdateRedeemBatch()
     {
         $response = '{
@@ -143,6 +163,9 @@ class ResponseTest extends TestCase
         $this->assertEquals($data->message, 'Successfully updated : redeem details');
     }
 
+    /**
+     * Ensure execute redeem batch response works.
+     */
     public function testExecuteRedeemBatch()
     {
         $response = '{
@@ -160,6 +183,9 @@ class ResponseTest extends TestCase
         $this->assertEquals($data->message, 'Successfully executed batch redeem');
     }
 
+    /**
+     * Ensure reverse redeem response works.
+     */
     public function testReverseRedeem()
     {
         $response = '{
@@ -177,6 +203,9 @@ class ResponseTest extends TestCase
         $this->assertEquals($data->message, 'Successfully reverse redeem by pos');
     }
 
+    /**
+     * Ensure rewards card accumulate response works.
+     */
     public function testRewardsCardAccumulatePointResponse()
     {
         $faker = Faker\Factory::create();
@@ -192,6 +221,9 @@ class ResponseTest extends TestCase
         $this->assertEquals($data->amount, $amount);
     }
 
+    /**
+     * Ensure rewards card deplete response works.
+     */
     public function testRewardsCardDepletePointResponse()
     {
         $faker = Faker\Factory::create();

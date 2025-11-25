@@ -44,10 +44,8 @@ class Response
     ];
 
     /**
-     * __construct.
-     *
-     * @param string $type
-     * @param array  $params
+     * @param string $type   Response type key.
+     * @param array  $params Raw response data.
      */
     public function __construct(string $type, array $params)
     {
@@ -68,14 +66,14 @@ class Response
     }
 
     /**
-     * Mapping object value.
+     * Hydrate the given response object with params.
      *
-     * @param object $response
-     * @param array  $params
+     * @param \CHYP\Partner\Echooss\Voucher\Type\Response\ResponseInterface $response Response instance.
+     * @param array                                                         $params   Raw field array.
      *
      * @return \CHYP\Partner\Echooss\Voucher\Type\Response\ResponseInterface
      */
-    protected function mappingValue($response, array $params): ResponseInterface
+    protected function mappingValue(ResponseInterface $response, array $params): ResponseInterface
     {
         foreach ($params as $columnName => $value) {
             $columnName = Utils::camelCase($columnName);

@@ -14,9 +14,9 @@ class RewardsCard
     protected string $apiPrefix = '/api/pos';
 
     /**
-     * __construct.
+     * Build RewardsCard service.
      *
-     * @param Core $core
+     * @param Core $core Echoss core facade.
      */
     public function __construct(Core $core)
     {
@@ -25,10 +25,10 @@ class RewardsCard
     }
 
     /**
-     * Do request.
+     * Call RewardsCard API based on action.
      *
-     * @param string $action
-     * @param array  $data
+     * @param string $action API action name.
+     * @param array  $data   Request payload.
      *
      * @return \CHYP\Partner\Echooss\Voucher\Type\Response
      */
@@ -44,9 +44,9 @@ class RewardsCard
     }
 
     /**
-     * Echoss VIP Member Loyalty Card: New Purchase Added (Points Earned for Minimum Spending.
+     * Echoss VIP Member Loyalty Card: accumulate point.
      *
-     * @param array $data
+     * @param array $data Accumulation parameters.
      *
      * @return \CHYP\Partner\Echooss\Voucher\Type\Response
      */
@@ -54,7 +54,7 @@ class RewardsCard
     {
         $response = $this->core->request(
             'POST',
-            $this->apiPrefix.'/mps-card-send-point',
+            $this->apiPrefix . '/mps-card-send-point',
             [
                 'data' => $data,
             ]
@@ -64,9 +64,9 @@ class RewardsCard
     }
 
     /**
-     * Deduct Echoss VIP Member Loyalty Card Points.
+     * Deduct Echoss VIP Member Loyalty Card points.
      *
-     * @param array $data
+     * @param array $data Depletion parameters.
      *
      * @return \CHYP\Partner\Echooss\Voucher\Type\Response
      */
@@ -74,7 +74,7 @@ class RewardsCard
     {
         $response = $this->core->request(
             'POST',
-            $this->apiPrefix.'/mps-card-deduct-point',
+            $this->apiPrefix . '/mps-card-deduct-point',
             [
                 'data' => $data,
             ]

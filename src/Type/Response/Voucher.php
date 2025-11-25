@@ -111,9 +111,9 @@ class Voucher extends Response
      * Type 1 is coupon.
      * Type 2 is voucher.
      *
-     * @param int $value
+     * @param integer $value Voucher type value.
      *
-     * @return int
+     * @return integer
      */
     public function type(int $value): int
     {
@@ -125,11 +125,11 @@ class Voucher extends Response
     }
 
     /**
-     * Push vocuher images.
+     * Build voucher image objects.
      *
-     * @param array $images
+     * @param array $images Image rows returned by API.
      *
-     * @return array
+     * @return array<\CHYP\Partner\Echooss\Voucher\Type\Response\VoucherImage>
      */
     public function images(array $images): array
     {
@@ -143,11 +143,11 @@ class Voucher extends Response
     }
 
     /**
-     * Setup date object.
+     * Convert raw date string to immutable date object.
      *
-     * @param string $date
+     * @param string|null $date Date string or null.
      *
-     * @return DateTimeImmutable
+     * @return \DateTimeImmutable|null Parsed date instance.
      */
     protected function processDate(?string $date): ?DateTimeImmutable
     {
@@ -155,11 +155,11 @@ class Voucher extends Response
     }
 
     /**
-     * Parse to Datetime object.
+     * Parse voucher start date.
      *
-     * @param string|null $date
+     * @param string|null $date Date string.
      *
-     * @return void
+     * @return \DateTimeImmutable|null Parsed date instance.
      */
     public function startDate(?string $date)
     {
@@ -167,11 +167,11 @@ class Voucher extends Response
     }
 
     /**
-     * Parse to Datetime object.
+     * Parse voucher end date.
      *
-     * @param string|null $date
+     * @param string|null $date Date string.
      *
-     * @return void
+     * @return \DateTimeImmutable|null Parsed date instance.
      */
     public function endDate(?string $date)
     {
@@ -179,11 +179,11 @@ class Voucher extends Response
     }
 
     /**
-     * Parse to Datetime object.
+     * Parse sales start date.
      *
-     * @param string|null $date
+     * @param string|null $date Date string.
      *
-     * @return void
+     * @return \DateTimeImmutable|null Parsed date instance.
      */
     public function salesStartDate(?string $date)
     {
@@ -191,11 +191,11 @@ class Voucher extends Response
     }
 
     /**
-     * Parse to Datetime object.
+     * Parse sales end date.
      *
-     * @param string|null $date
+     * @param string|null $date Date string.
      *
-     * @return void
+     * @return \DateTimeImmutable|null
      */
     public function salesEndDate(?string $date)
     {

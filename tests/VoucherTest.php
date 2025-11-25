@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests;
+
 use CHYP\Partner\Echooss\Voucher\Core;
 use CHYP\Partner\Echooss\Voucher\Exception\RequestTypeException;
 use CHYP\Partner\Echooss\Voucher\Exception\ResponseTypeException;
@@ -19,12 +21,10 @@ class VoucherTest extends TestCase
 {
     /**
      * Call this template method before each test method is run.
-     *
-     * @return void
      */
     protected function setUp(): void
     {
-        $dotenv = Dotenv::createImmutable(__DIR__.'/../');
+        $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
         $dotenv->safeLoad();
 
         $this->core = new Core(true);
@@ -32,6 +32,9 @@ class VoucherTest extends TestCase
         $this->core->setToken($_ENV['VOUCHER_TOKEN']);
     }
 
+    /**
+     * Ensure API call without token raises error.
+     */
     public function testApiUnauth()
     {
         $this->core->setToken('');
@@ -45,6 +48,9 @@ class VoucherTest extends TestCase
         $this->core->voucher('voucherList', $param);
     }
 
+    /**
+     * Ensure voucher list error by line id is propagated.
+     */
     public function testRequestVoucherListUserNotFoundByLineId()
     {
         // line
@@ -58,6 +64,9 @@ class VoucherTest extends TestCase
         $this->core->voucher('voucherList', $param);
     }
 
+    /**
+     * Ensure voucher list error by phone is propagated.
+     */
     public function testRequestVoucherListUserNotFoundByPhoneNumber()
     {
         $param = new VoucherList();
@@ -71,9 +80,15 @@ class VoucherTest extends TestCase
     }
 
     /**
+     * Validate create redeem batch error responses.
+     *
+     * @param string                                                       $message Expected error message.
+     * @param \CHYP\Partner\Echooss\Voucher\Type\Request\CreateRedeemBatch $param   Request DTO.
+     *
+     *
      * @dataProvider additionCreateRedeemBatchProvider
      */
-    public function testRequestCreateRedeemBatch($message, $param)
+    public function testRequestCreateRedeemBatch(string $message, CreateRedeemBatch $param)
     {
         $this->expectException(ResponseTypeException::class);
         $this->expectExceptionMessage($message);
@@ -81,6 +96,9 @@ class VoucherTest extends TestCase
         $this->core->voucher('createRedeemBatch', $param);
     }
 
+    /**
+     * @return array
+     */
     public function additionCreateRedeemBatchProvider()
     {
         $param = new CreateRedeemBatch();
@@ -96,6 +114,9 @@ class VoucherTest extends TestCase
         ];
     }
 
+    /**
+     * Ensure query redeem batch surfaces backend error.
+     */
     public function testRequestQueryRedeemBatch()
     {
         $faker = Faker\Factory::create();
@@ -111,6 +132,9 @@ class VoucherTest extends TestCase
         $response = $this->core->voucher('queryRedeemBatch', $param);
     }
 
+    /**
+     * Ensure query redeem batch detail surfaces backend error.
+     */
     public function testRequestQueryRedeemBatchDetail()
     {
         $faker = Faker\Factory::create();
@@ -126,6 +150,9 @@ class VoucherTest extends TestCase
         $this->core->voucher('queryRedeemBatchDetail', $param);
     }
 
+    /**
+     * Validate freeze minutes upper bound.
+     */
     public function testRequestFreezeRedeemBatchOverMins()
     {
         $param = new FreezeRedeemBatch();
@@ -136,6 +163,9 @@ class VoucherTest extends TestCase
         $param->freezeMins = 80;
     }
 
+    /**
+     * Validate freeze minutes lower bound.
+     */
     public function testRequestFreezeRedeemBatchLessMins()
     {
         $param = new FreezeRedeemBatch();
@@ -146,6 +176,9 @@ class VoucherTest extends TestCase
         $param->freezeMins = 0;
     }
 
+    /**
+     * Ensure freeze redeem batch error surfaces.
+     */
     public function testRequestFreezeRedeemBatch()
     {
         $faker = Faker\Factory::create();
@@ -162,6 +195,9 @@ class VoucherTest extends TestCase
         $this->core->voucher('freezeRedeemBatch', $param);
     }
 
+    /**
+     * Ensure update redeem batch error surfaces.
+     */
     public function testUpdateRedeemBatch()
     {
         $faker = Faker\Factory::create();
@@ -175,11 +211,14 @@ class VoucherTest extends TestCase
         ];
 
         $this->expectException(ResponseTypeException::class);
-        $this->expectExceptionMessage('{"data":{"success":false,"message":"not support for voucher '.$param->batchUuid.'"}}');
+        $this->expectExceptionMessage('{"data":{"success":false,"message":"not support for voucher ' . $param->batchUuid . '"}}');
 
         $this->core->voucher('updateRedeemBatch', $param);
     }
 
+    /**
+     * Ensure execute redeem batch error surfaces.
+     */
     public function testExecuteRedeemBatch()
     {
         $faker = Faker\Factory::create();
@@ -196,9 +235,15 @@ class VoucherTest extends TestCase
     }
 
     /**
+     * Validate reverse redeem error responses.
+     *
+     * @param \CHYP\Partner\Echooss\Voucher\Type\Request\ReverseRedeem $param   Request payload.
+     * @param string                                                   $message Expected error message.
+     *
+     *
      * @dataProvider additionReverseRedeemProvider
      */
-    public function testReverseRedeem($param, $message)
+    public function testReverseRedeem(ReverseRedeem $param, string $message)
     {
         $this->expectException(ResponseTypeException::class);
         $this->expectExceptionMessage($message);
@@ -206,6 +251,9 @@ class VoucherTest extends TestCase
         $this->core->voucher('reverseRedeem', $param);
     }
 
+    /**
+     * @return array
+     */
     public function additionReverseRedeemProvider()
     {
         $provider = [];

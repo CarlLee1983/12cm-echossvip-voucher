@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests;
+
 use CHYP\Partner\Echooss\Voucher\Type\Request\AccumulatePoint;
 use CHYP\Partner\Echooss\Voucher\Type\Request\AccumulatePointDetail;
 use CHYP\Partner\Echooss\Voucher\Type\Request\CreateRedeemBatch;
@@ -15,6 +17,9 @@ use PHPUnit\Framework\TestCase;
 
 class RequestTypeTest extends TestCase
 {
+    /**
+     * Ensure voucher list accepts line ID.
+     */
     public function testRequestVoucherListType()
     {
         $faker = Faker\Factory::create();
@@ -25,6 +30,9 @@ class RequestTypeTest extends TestCase
         $this->assertEquals($data->lineId, $randomString);
     }
 
+    /**
+     * Ensure voucher list payload toggles between phone and line.
+     */
     public function testRequestVoucherListTypeToParams()
     {
         $data = new VoucherList();
@@ -42,6 +50,9 @@ class RequestTypeTest extends TestCase
         $this->assertTrue(isset($data->toArray()['phone_number']));
     }
 
+    /**
+     * Ensure voucher list accepts valid phone number.
+     */
     public function testRequestVoucherListTypeWithValidPhoneNumber()
     {
         $data = new VoucherList();
@@ -51,6 +62,9 @@ class RequestTypeTest extends TestCase
         $this->assertEquals($data->phoneNumber, $phoneNumber);
     }
 
+    /**
+     * Ensure invalid phone number throws exception.
+     */
     public function testRequestVoucherListTypeWithInvalidPhoneNumber()
     {
         $this->expectException(\CHYP\Partner\Echooss\Voucher\Exception\RequestTypeException::class);
@@ -60,6 +74,9 @@ class RequestTypeTest extends TestCase
         $data->phoneNumber = '123';
     }
 
+    /**
+     * Ensure phone number mutator stores value.
+     */
     public function testPhoneNumberIsSetCorrectly()
     {
         $data = new CreateRedeemBatch();
@@ -69,6 +86,9 @@ class RequestTypeTest extends TestCase
         $this->assertEquals($data->phoneNumber, $phoneNumber);
     }
 
+    /**
+     * Ensure storeOpenId/posMacUid mutators store values and defaults.
+     */
     public function testStoreOpenIdAndPosMacUidAreSetCorrectly()
     {
         $data = new CreateRedeemBatch();
@@ -92,6 +112,9 @@ class RequestTypeTest extends TestCase
         ]);
     }
 
+    /**
+     * Ensure batch list stores Redeem DTOs.
+     */
     public function testBatchListIsSetCorrectly()
     {
         $data = new CreateRedeemBatch();
@@ -111,6 +134,9 @@ class RequestTypeTest extends TestCase
         $this->assertEquals($data->batchList[1]->redeemId, $id2);
     }
 
+    /**
+     * Ensure query redeem batch toArray mapping works.
+     */
     public function testQueryRedeemBatch()
     {
         $data = new QueryRedeemBatch();
@@ -141,6 +167,9 @@ class RequestTypeTest extends TestCase
         ]);
     }
 
+    /**
+     * Ensure query redeem batch detail toArray mapping works.
+     */
     public function testQueryRedeemBatchDetail()
     {
         $data = new QueryRedeemBatchDetail();
@@ -171,6 +200,9 @@ class RequestTypeTest extends TestCase
         ]);
     }
 
+    /**
+     * Ensure freeze redeem batch toArray mapping works.
+     */
     public function testFreezeRedeemBatch()
     {
         $data = new FreezeRedeemBatch();
@@ -204,6 +236,9 @@ class RequestTypeTest extends TestCase
         ]);
     }
 
+    /**
+     * Ensure update redeem batch handles batch list.
+     */
     public function testUpdateRedeemBatch()
     {
         $data = new UpdateRedeemBatch();
@@ -223,6 +258,9 @@ class RequestTypeTest extends TestCase
         $this->assertEquals($data->batchList[1]->redeemId, $id2);
     }
 
+    /**
+     * Ensure execute redeem batch toArray mapping works.
+     */
     public function testExecuteRedeemBatch()
     {
         $data = new ExecuteRedeemBatch();
@@ -253,6 +291,9 @@ class RequestTypeTest extends TestCase
         ]);
     }
 
+    /**
+     * Ensure reverse redeem stores phone number.
+     */
     public function testReverseRedeem()
     {
         $data = new ReverseRedeem();
@@ -262,6 +303,9 @@ class RequestTypeTest extends TestCase
         $this->assertEquals($data->phoneNumber, $phoneNumber);
     }
 
+    /**
+     * Ensure accumulate point payload mapping works.
+     */
     public function testAccumulatePoint()
     {
         $data = new AccumulatePoint();
@@ -288,6 +332,9 @@ class RequestTypeTest extends TestCase
         ]);
     }
 
+    /**
+     * Ensure deplete point payload mapping works.
+     */
     public function testDepletePoint()
     {
         $data = new DepletePoint();

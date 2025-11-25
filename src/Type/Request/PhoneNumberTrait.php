@@ -7,9 +7,9 @@ use CHYP\Partner\Echooss\Voucher\Utils;
 trait PhoneNumberTrait
 {
     /**
-     * Required, Member's Cell Phone Number. Validation phne number.
+     * Validate and assign member phone number.
      *
-     * @param string $phoneNumber
+     * @param string $phoneNumber Taiwan phone number string.
      *
      * @return string
      */

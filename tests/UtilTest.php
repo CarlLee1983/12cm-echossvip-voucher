@@ -1,10 +1,15 @@
 <?php
 
+namespace Tests;
+
 use CHYP\Partner\Echooss\Voucher\Utils;
 use PHPUnit\Framework\TestCase;
 
 class UtilTest extends TestCase
 {
+    /**
+     * Ensure snake_case converts to camelCase.
+     */
     public function testToCamelCase()
     {
         $originalString = 'line_id_to_request';
@@ -13,6 +18,9 @@ class UtilTest extends TestCase
         $this->assertEquals($camelCase, 'lineIdToRequest');
     }
 
+    /**
+     * Ensure camelCase converts to snake_case.
+     */
     public function testToSnakeCase()
     {
         $originalString = 'lineIdToRequest';
@@ -21,6 +29,9 @@ class UtilTest extends TestCase
         $this->assertEquals($snakeCase, 'line_id_to_request');
     }
 
+    /**
+     * Ensure Taiwan phone validation works.
+     */
     public function testValidationPhoneName()
     {
         Utils::validPhoneNumber('0912123456');

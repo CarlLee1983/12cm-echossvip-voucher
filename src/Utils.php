@@ -7,9 +7,9 @@ use CHYP\Partner\Echooss\Voucher\Exception\RequestTypeException;
 class Utils
 {
     /**
-     * To camel case.
+     * Convert snake_case string to camelCase.
      *
-     * @param string $input
+     * @param string $input Raw string.
      *
      * @return string
      */
@@ -23,9 +23,9 @@ class Utils
     }
 
     /**
-     * To sank case.
+     * Convert camelCase string to snake_case.
      *
-     * @param string $input
+     * @param string $input Raw string.
      *
      * @return string
      */
@@ -35,16 +35,16 @@ class Utils
     }
 
     /**
-     * Validation phone number.
+     * Validate Taiwan mobile phone format.
      *
-     * @param string $value
+     * @param string $value Phone number string.
      *
      * @return void
      */
-    public static function validPhoneNumber(string $value)
+    public static function validPhoneNumber(string $value): void
     {
         if (!preg_match('/^(\+886|0)[9]\d{8}$/', $value)) {
-            throw new RequestTypeException('Invalid Taiwan mobile number. $value:'.$value);
+            throw new RequestTypeException('Invalid Taiwan mobile number. $value:' . $value);
         }
     }
 }

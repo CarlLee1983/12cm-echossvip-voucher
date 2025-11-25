@@ -26,11 +26,9 @@ class AccumulatePointDetail extends Request
     public int $quantity = 1;
 
     /**
-     * __construct.
-     *
-     * @param string $productName
-     * @param int    $unitPrice
-     * @param int    $quantity
+     * @param string  $productName Product name.
+     * @param integer $unitPrice   Unit price.
+     * @param integer $quantity    Quantity.
      */
     public function __construct(string $productName, int $unitPrice, int $quantity)
     {

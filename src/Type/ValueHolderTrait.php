@@ -12,10 +12,12 @@ trait ValueHolderTrait
     protected array $protectedData = [];
 
     /**
-     * Is invoked when writing a value to a non-existing or inaccessible property.
+     * Triggered when assigning to inaccessible properties.
      *
-     * @param string $varName
-     * @param mixed  $value
+     * @param string                                         $varName Property name.
+     * @param array|object|string|integer|float|boolean|null $value   Assigned value.
+     *
+     * @return void
      */
     public function __set(string $varName, $value)
     {
@@ -27,11 +29,11 @@ trait ValueHolderTrait
     }
 
     /**
-     * Is utilized for reading data from inaccessible (protected or private) or non-existing properties.
+     * Triggered when reading inaccessible properties.
      *
-     * @param string $varName
+     * @param string $varName Property name.
      *
-     * @return mixed
+     * @return mixed Stored value.
      */
     public function __get(string $varName)
     {

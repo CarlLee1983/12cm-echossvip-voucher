@@ -26,11 +26,11 @@ class VoucherImage extends Response
     public ?int $order;
 
     /**
-     * __construct.
+     * Build voucher image value object.
      *
-     * @param int    $id
-     * @param string $url
-     * @param string $order
+     * @param integer      $id    Image identifier.
+     * @param string       $url   Image URL.
+     * @param integer|null $order Image order (nullable).
      */
     public function __construct(int $id, string $url, ?int $order)
     {

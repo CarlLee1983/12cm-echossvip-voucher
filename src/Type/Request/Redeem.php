@@ -21,11 +21,9 @@ class Redeem extends Request
     public int $redeemQuantity;
 
     /**
-     * __construct.
-     *
-     * @param int    $redeemId
-     * @param string $redeemId
-     * @param int    $redeemQuantity
+     * @param integer $redeemType     Redeem type code.
+     * @param string  $redeemId       Voucher hash ID.
+     * @param integer $redeemQuantity Quantity to redeem.
      */
     public function __construct(int $redeemType = 1, string $redeemId = '', int $redeemQuantity = 1)
     {
@@ -35,12 +33,11 @@ class Redeem extends Request
     }
 
     /**
-     * Required, Redemption Coupon Type.
+     * Define redeem coupon type (1: coupon, 2: product voucher).
      *
-     * 1 represents member discount coupon.
-     * 2 represents member product voucher.
+     * @param integer $type Type code.
      *
-     * @var int
+     * @return integer Validated type code.
      */
     public function redeemType(int $type)
     {

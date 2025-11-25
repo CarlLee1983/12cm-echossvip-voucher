@@ -45,9 +45,9 @@ class Voucher
     ];
 
     /**
-     * __construct.
+     * Initialize voucher HTTP gateway.
      *
-     * @param Core $core
+     * @param Core $core Echoss core facade.
      */
     public function __construct(Core $core)
     {
@@ -61,10 +61,10 @@ class Voucher
     }
 
     /**
-     * Call api by action.
+     * Call voucher API by action.
      *
-     * @param string $action
-     * @param array  $param
+     * @param string $action Action name.
+     * @param array  $param  Request payload.
      *
      * @return \CHYP\Partner\Echooss\Voucher\Type\Response
      */
@@ -76,7 +76,7 @@ class Voucher
 
         $response = $this->core->request(
             'POST',
-            $this->apiPrefix.$this->requestPath[$action],
+            $this->apiPrefix . $this->requestPath[$action],
             $param
         );
 
