@@ -10,6 +10,7 @@ use CHYP\Partner\Echooss\Voucher\Type\Request\ExecuteRedeemBatch;
 use CHYP\Partner\Echooss\Voucher\Type\Request\FreezeRedeemBatch;
 use CHYP\Partner\Echooss\Voucher\Type\Request\QueryRedeemBatch;
 use CHYP\Partner\Echooss\Voucher\Type\Request\QueryRedeemBatchDetail;
+use CHYP\Partner\Echooss\Voucher\Type\Request\Redeem;
 use CHYP\Partner\Echooss\Voucher\Type\Request\ReverseRedeem;
 use CHYP\Partner\Echooss\Voucher\Type\Request\UpdateRedeemBatch;
 use CHYP\Partner\Echooss\Voucher\Type\Request\VoucherList;
@@ -22,8 +23,7 @@ class RequestTypeTest extends TestCase
      */
     public function testRequestVoucherListType()
     {
-        $faker = Faker\Factory::create();
-        $randomString = $faker->text(10);
+        $randomString = 'test_line_id_123';
 
         $data = new VoucherList();
         $data->lineId = $randomString;
@@ -36,8 +36,7 @@ class RequestTypeTest extends TestCase
     public function testRequestVoucherListTypeToParams()
     {
         $data = new VoucherList();
-        $faker = Faker\Factory::create();
-        $data->lineId = $faker->text(10);
+        $data->lineId = 'test_line_id_456';
 
         $this->assertTrue(isset($data->toArray()['line_id']));
         $this->assertFalse(isset($data->toArray()['phone_number']));
@@ -118,13 +117,12 @@ class RequestTypeTest extends TestCase
     public function testBatchListIsSetCorrectly()
     {
         $data = new CreateRedeemBatch();
-        $faker = Faker\Factory::create();
-        $id1 = $faker->text(10);
-        $id2 = $faker->text(10);
+        $id1 = 'voucher_1';
+        $id2 = 'voucher_2';
 
         $data->batchList = [
-            new CHYP\Partner\Echooss\Voucher\Type\Request\Redeem(1, $id1, 1),
-            new CHYP\Partner\Echooss\Voucher\Type\Request\Redeem(2, $id2, 1),
+            new Redeem(1, $id1, 1),
+            new Redeem(2, $id2, 1),
         ];
 
         $this->assertIsArray($data->batchList);
@@ -148,11 +146,9 @@ class RequestTypeTest extends TestCase
             'pos_mac_uid'   => '',
         ]);
 
-        $faker = Faker\Factory::create();
-
-        $batchToken = $faker->text(10);
-        $storeOpenId = $faker->text(10);
-        $posMacUid = $faker->text(10);
+        $batchToken = 'token_abc';
+        $storeOpenId = 'store_123';
+        $posMacUid = 'pos_456';
 
         $data->batchToken = $batchToken;
         $data->storeOpenId = $storeOpenId;
@@ -181,11 +177,9 @@ class RequestTypeTest extends TestCase
             'pos_mac_uid'   => '',
         ]);
 
-        $faker = Faker\Factory::create();
-
-        $batchUuid = $faker->text(10);
-        $storeOpenId = $faker->text(10);
-        $posMacUid = $faker->text(10);
+        $batchUuid = 'uuid_789';
+        $storeOpenId = 'store_123';
+        $posMacUid = 'pos_456';
 
         $data->batchUuid = $batchUuid;
         $data->storeOpenId = $storeOpenId;
@@ -215,11 +209,9 @@ class RequestTypeTest extends TestCase
             'freeze_mins'   => 1,
         ]);
 
-        $faker = Faker\Factory::create();
-
-        $batchUuid = $faker->text(10);
-        $storeOpenId = $faker->text(10);
-        $posMacUid = $faker->text(10);
+        $batchUuid = 'uuid_111';
+        $storeOpenId = 'store_222';
+        $posMacUid = 'pos_333';
 
         $data->batchUuid = $batchUuid;
         $data->storeOpenId = $storeOpenId;
@@ -242,13 +234,12 @@ class RequestTypeTest extends TestCase
     public function testUpdateRedeemBatch()
     {
         $data = new UpdateRedeemBatch();
-        $faker = Faker\Factory::create();
-        $id1 = $faker->text(10);
-        $id2 = $faker->text(10);
+        $id1 = 'voucher_A';
+        $id2 = 'voucher_B';
 
         $data->batchList = [
-            new CHYP\Partner\Echooss\Voucher\Type\Request\Redeem(1, $id1, 1),
-            new CHYP\Partner\Echooss\Voucher\Type\Request\Redeem(2, $id2, 1),
+            new Redeem(1, $id1, 1),
+            new Redeem(2, $id2, 1),
         ];
 
         $this->assertIsArray($data->batchList);
@@ -272,11 +263,9 @@ class RequestTypeTest extends TestCase
             'pos_mac_uid'   => '',
         ]);
 
-        $faker = Faker\Factory::create();
-
-        $batchUuid = $faker->text(10);
-        $storeOpenId = $faker->text(10);
-        $posMacUid = $faker->text(10);
+        $batchUuid = 'uuid_exec';
+        $storeOpenId = 'store_exec';
+        $posMacUid = 'pos_exec';
 
         $data->batchUuid = $batchUuid;
         $data->storeOpenId = $storeOpenId;

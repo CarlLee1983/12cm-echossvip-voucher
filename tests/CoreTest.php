@@ -270,7 +270,7 @@ class CoreTest extends TestCase
         $param->phoneNumber = '0912345678';
         $param->amount = 100;
 
-        $result = $core->rewardsCard('accumulatePoint', [$param]);
+        $result = $core->rewardsCard('accumulatePoint', $param);
 
         $this->assertInstanceOf(ResponseInterface::class, $result);
     }

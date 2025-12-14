@@ -17,7 +17,6 @@ use CHYP\Partner\Echooss\Voucher\Exception\ResponseTypeException;
 use CHYP\Partner\Echooss\Voucher\Infrastructure\Http\RewardsCardGateway;
 use CHYP\Partner\Echooss\Voucher\Infrastructure\Http\VoucherGateway;
 use CHYP\Partner\Echooss\Voucher\Type\Request\RequestInterface;
-use CHYP\Partner\Echooss\Voucher\Type\Response;
 use CHYP\Partner\Echooss\Voucher\Type\Response\ResponseInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\ClientInterface;
@@ -166,62 +165,20 @@ class Core
     }
 
     /**
-     * Legacy helper returning aggregated Type\Response object.
-     *
-     * @deprecated Prefer {@see voucher()} which returns concrete ResponseInterface.
-     *
-     * @param string|VoucherUseCaseInterface $action Action string or use case.
-     * @param RequestInterface|null          $param  Request DTO when using string action.
-     *
-     * @return \CHYP\Partner\Echooss\Voucher\Type\Response
-     */
-    public function voucherLegacy($action, RequestInterface $param = null): Response
-    {
-        $useCase = $action instanceof VoucherUseCaseInterface
-            ? $action
-            : $this->voucherUseCaseFactory->create($action, $param);
-
-        $raw = $this->voucherService->requestRaw($useCase);
-
-        return new Response($useCase->responseType(), $raw);
-    }
-
-    /**
      * Execute Echoss rewards-card API.
      *
      * @param string|RewardsCardUseCaseInterface $action Action string or use case.
-     * @param array                              $param  Request payload array.
+     * @param RequestInterface                   $param  Request payload DTO.
      *
      * @return \CHYP\Partner\Echooss\Voucher\Type\Response\ResponseInterface
      */
-    public function rewardsCard($action, array $param): ResponseInterface
+    public function rewardsCard($action, RequestInterface $param): ResponseInterface
     {
         $useCase = $action instanceof RewardsCardUseCaseInterface
             ? $action
             : $this->rewardsCardUseCaseFactory->create($action, $param);
 
         return $this->rewardsCardService->handle($useCase);
-    }
-
-    /**
-     * Legacy helper returning Type\Response for rewards card.
-     *
-     * @deprecated Prefer {@see rewardsCard()} which returns concrete ResponseInterface.
-     *
-     * @param string|RewardsCardUseCaseInterface $action Action string or use case.
-     * @param array                              $param  Request payload array.
-     *
-     * @return \CHYP\Partner\Echooss\Voucher\Type\Response
-     */
-    public function rewardsCardLegacy($action, array $param): Response
-    {
-        $useCase = $action instanceof RewardsCardUseCaseInterface
-            ? $action
-            : $this->rewardsCardUseCaseFactory->create($action, $param);
-
-        $raw = $this->rewardsCardService->requestRaw($useCase);
-
-        return new Response($useCase->responseType(), $raw);
     }
 
     /**

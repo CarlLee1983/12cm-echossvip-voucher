@@ -16,9 +16,7 @@ use Illuminate\Support\Facades\Facade;
  * @method static string getToken() 取得 API Token
  * @method static Core setToken(string $token) 設定 API Token
  * @method static ResponseInterface voucher(string $action, RequestInterface $param = null) 執行 Voucher API
- * @method static ResponseInterface rewardsCard(string $action, array $param) 執行 Rewards Card API
- * @method static \CHYP\Partner\Echooss\Voucher\Type\Response voucherLegacy(string $action, RequestInterface $param = null) 執行 Voucher API（舊版相容）
- * @method static \CHYP\Partner\Echooss\Voucher\Type\Response rewardsCardLegacy(string $action, array $param) 執行 Rewards Card API（舊版相容）
+ * @method static ResponseInterface rewardsCard(string $action, RequestInterface $param) 執行 Rewards Card API
  * @method static \Psr\Http\Message\ResponseInterface request(string $method, string $path, array $content = []) 底層 HTTP 請求
  * @method static array deepDeconstruction(mixed $row) 將 Request/Response 物件解構為陣列
  * @method static \CHYP\Partner\Echooss\Voucher\Application\Factory\VoucherUseCaseFactory getVoucherUseCaseFactory() 取得 Voucher UseCase 工廠

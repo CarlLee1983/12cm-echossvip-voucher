@@ -6,6 +6,8 @@ use CHYP\Partner\Echooss\Voucher\Application\Factory\RewardsCardUseCaseFactory;
 use CHYP\Partner\Echooss\Voucher\Application\UseCase\RewardsCard\AccumulatePointUseCase;
 use CHYP\Partner\Echooss\Voucher\Application\UseCase\RewardsCard\DepletePointUseCase;
 use CHYP\Partner\Echooss\Voucher\Exception\RequestTypeException;
+use CHYP\Partner\Echooss\Voucher\Type\Request\AccumulatePoint;
+use CHYP\Partner\Echooss\Voucher\Type\Request\DepletePoint;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,10 +27,9 @@ class RewardsCardUseCaseFactoryTest extends TestCase
      */
     public function testCreateAccumulatePointUseCase(): void
     {
-        $payload = [
-            'phone_number' => '0912345678',
-            'points' => 100,
-        ];
+        $payload = new AccumulatePoint();
+        $payload->phoneNumber = '0912345678';
+        $payload->amount = 100;
 
         $useCase = $this->factory->create('accumulatePoint', $payload);
 
@@ -42,10 +43,9 @@ class RewardsCardUseCaseFactoryTest extends TestCase
      */
     public function testCreateDepletePointUseCase(): void
     {
-        $payload = [
-            'phone_number' => '0912345678',
-            'points' => 50,
-        ];
+        $payload = new DepletePoint();
+        $payload->phoneNumber = '0912345678';
+        $payload->point = 50;
 
         $useCase = $this->factory->create('depletePoint', $payload);
 
@@ -62,18 +62,18 @@ class RewardsCardUseCaseFactoryTest extends TestCase
         $this->expectException(RequestTypeException::class);
         $this->expectExceptionMessage('Request action "invalidAction" not exists');
 
-        $this->factory->create('invalidAction', []);
+        $this->factory->create('invalidAction', new AccumulatePoint());
     }
 
     /**
-     * 測試非陣列 payload 應該拋出例外。
+     * 測試無效 payload (非 RequestInterface) 應該拋出例外。
      */
-    public function testNonArrayPayloadThrowsException(): void
+    public function testInvalidPayloadThrowsException(): void
     {
         $this->expectException(RequestTypeException::class);
-        $this->expectExceptionMessage('RewardsCard request payload must be an array');
+        $this->expectExceptionMessage('RewardsCard request payload must implement RequestInterface');
 
-        $this->factory->create('accumulatePoint', 'invalid');
+        $this->factory->create('accumulatePoint', ['not' => 'a dto']);
     }
 
     /**

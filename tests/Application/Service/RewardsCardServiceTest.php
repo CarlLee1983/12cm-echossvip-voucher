@@ -9,8 +9,10 @@ use CHYP\Partner\Echooss\Voucher\Application\Service\RewardsCardService;
 use CHYP\Partner\Echooss\Voucher\Application\UseCase\RewardsCard\AccumulatePointUseCase;
 use CHYP\Partner\Echooss\Voucher\Application\UseCase\RewardsCard\DepletePointUseCase;
 use CHYP\Partner\Echooss\Voucher\Application\UseCase\RewardsCard\RewardsCardUseCaseInterface;
-use CHYP\Partner\Echooss\Voucher\Type\Response\AccumulatePoint;
-use CHYP\Partner\Echooss\Voucher\Type\Response\DepletePoint;
+use CHYP\Partner\Echooss\Voucher\Type\Request\AccumulatePoint;
+use CHYP\Partner\Echooss\Voucher\Type\Request\DepletePoint as DepletePointRequest;
+use CHYP\Partner\Echooss\Voucher\Type\Response\AccumulatePoint as AccumulatePointResponse;
+use CHYP\Partner\Echooss\Voucher\Type\Response\DepletePoint as DepletePointResponse;
 use CHYP\Partner\Echooss\Voucher\Type\Response\ResponseInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -42,22 +44,24 @@ class RewardsCardServiceTest extends TestCase
      */
     public function testHandleAccumulatePointUseCase(): void
     {
-        $requests = [
-            ['phone_number' => '0912345678', 'amount' => 100],
-        ];
-        $useCase = new AccumulatePointUseCase($requests);
+        $request = new AccumulatePoint();
+        $request->phoneNumber = '0912345678';
+        $request->amount = 100;
+        $useCase = new AccumulatePointUseCase($request);
 
+        $rawPayload = ['phone_number' => '0912345678', 'amount' => 100];
+        $assembledPayload = ['data' => [$rawPayload]];
         $rawResponse = ['message' => 'Success', 'point' => 10, 'amount' => 100];
-        $expectedResponse = new AccumulatePoint();
+        $expectedResponse = new AccumulatePointResponse();
 
         $this->requestAssembler->expects($this->once())
             ->method('toArray')
-            ->with(['data' => $requests])
-            ->willReturn(['data' => $requests]);
+            ->with(['data' => [$request]])
+            ->willReturn($assembledPayload);
 
         $this->gateway->expects($this->once())
             ->method('post')
-            ->with('/api/pos/mps-card-send-point', ['data' => $requests])
+            ->with('/api/pos/mps-card-send-point', $assembledPayload)
             ->willReturn($rawResponse);
 
         $this->responseHydrator->expects($this->once())
@@ -76,21 +80,24 @@ class RewardsCardServiceTest extends TestCase
      */
     public function testHandleDepletePointUseCase(): void
     {
-        $requests = [
-            ['phone_number' => '0912345678', 'point' => 5],
-        ];
-        $useCase = new DepletePointUseCase($requests);
+        $request = new DepletePointRequest();
+        $request->phoneNumber = '0912345678';
+        $request->point = 5;
+        $useCase = new DepletePointUseCase($request);
 
+        $rawPayload = ['phone_number' => '0912345678', 'point' => 5];
+        $assembledPayload = ['data' => [$rawPayload]];
         $rawResponse = ['message' => 'Points depleted'];
-        $expectedResponse = new DepletePoint();
+        $expectedResponse = new DepletePointResponse();
 
         $this->requestAssembler->expects($this->once())
             ->method('toArray')
-            ->willReturn(['data' => $requests]);
+            ->with(['data' => [$request]])
+            ->willReturn($assembledPayload);
 
         $this->gateway->expects($this->once())
             ->method('post')
-            ->with('/api/pos/mps-card-deduct-point', ['data' => $requests])
+            ->with('/api/pos/mps-card-deduct-point', $assembledPayload)
             ->willReturn($rawResponse);
 
         $this->responseHydrator->expects($this->once())
@@ -100,7 +107,7 @@ class RewardsCardServiceTest extends TestCase
 
         $result = $this->service->handle($useCase);
 
-        $this->assertInstanceOf(DepletePoint::class, $result);
+        $this->assertInstanceOf(DepletePointResponse::class, $result);
     }
 
     /**
@@ -108,14 +115,17 @@ class RewardsCardServiceTest extends TestCase
      */
     public function testRequestRawReturnsRawApiData(): void
     {
-        $requests = [['phone_number' => '0912345678']];
-        $useCase = new AccumulatePointUseCase($requests);
+        $request = new AccumulatePoint();
+        $request->phoneNumber = '0912345678';
+        $useCase = new AccumulatePointUseCase($request);
 
+        $assembledPayload = ['data' => [['phone_number' => '0912345678']]];
         $expectedRaw = ['message' => 'Success', 'point' => 100];
 
         $this->requestAssembler->expects($this->once())
             ->method('toArray')
-            ->willReturn(['data' => $requests]);
+            ->with(['data' => [$request]])
+            ->willReturn($assembledPayload);
 
         $this->gateway->expects($this->once())
             ->method('post')
@@ -133,10 +143,11 @@ class RewardsCardServiceTest extends TestCase
     {
         $mockUseCase = $this->createMock(RewardsCardUseCaseInterface::class);
         $mockResponse = $this->createMock(ResponseInterface::class);
+        $mockRequest = new AccumulatePoint(); // Dummy
 
         $mockUseCase->expects($this->once())
             ->method('payload')
-            ->willReturn(['data' => [['test' => 'payload']]]);
+            ->willReturn(['data' => [$mockRequest]]);
 
         $mockUseCase->expects($this->once())
             ->method('path')
@@ -148,6 +159,7 @@ class RewardsCardServiceTest extends TestCase
 
         $this->requestAssembler->expects($this->once())
             ->method('toArray')
+            ->with(['data' => [$mockRequest]])
             ->willReturn(['data' => [['test' => 'payload']]]);
 
         $this->gateway->expects($this->once())
@@ -166,36 +178,13 @@ class RewardsCardServiceTest extends TestCase
     }
 
     /**
-     * 測試多筆請求的處理。
-     */
-    public function testHandleWithMultipleRequests(): void
-    {
-        $requests = [
-            ['phone_number' => '0912345678', 'amount' => 100],
-            ['phone_number' => '0923456789', 'amount' => 200],
-        ];
-        $useCase = new AccumulatePointUseCase($requests);
-        $mockResponse = new AccumulatePoint();
-
-        $this->requestAssembler->method('toArray')
-            ->willReturn(['data' => $requests]);
-
-        $this->gateway->expects($this->once())
-            ->method('post')
-            ->with('/api/pos/mps-card-send-point', ['data' => $requests]);
-
-        $this->responseHydrator->method('hydrate')->willReturn($mockResponse);
-
-        $this->service->handle($useCase);
-    }
-
-    /**
      * 測試空回應的處理。
      */
     public function testHandleWithEmptyResponse(): void
     {
-        $useCase = new AccumulatePointUseCase([]);
-        $mockResponse = new AccumulatePoint();
+        $request = new AccumulatePoint();
+        $useCase = new AccumulatePointUseCase($request);
+        $mockResponse = new AccumulatePointResponse();
 
         $this->requestAssembler->method('toArray')->willReturn(['data' => []]);
         $this->gateway->method('post')->willReturn([]);
@@ -206,4 +195,3 @@ class RewardsCardServiceTest extends TestCase
         $this->assertInstanceOf(ResponseInterface::class, $result);
     }
 }
-

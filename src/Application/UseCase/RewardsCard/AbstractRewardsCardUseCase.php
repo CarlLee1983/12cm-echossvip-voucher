@@ -2,16 +2,18 @@
 
 namespace CHYP\Partner\Echooss\Voucher\Application\UseCase\RewardsCard;
 
+use CHYP\Partner\Echooss\Voucher\Type\Request\RequestInterface;
+
 abstract class AbstractRewardsCardUseCase implements RewardsCardUseCaseInterface
 {
-    protected array $requests;
+    protected RequestInterface $request;
 
     /**
-     * @param array $requests List of request DTOs.
+     * @param RequestInterface $request Request DTO.
      */
-    public function __construct(array $requests)
+    public function __construct(RequestInterface $request)
     {
-        $this->requests = $requests;
+        $this->request = $request;
     }
 
     /**
@@ -21,7 +23,7 @@ abstract class AbstractRewardsCardUseCase implements RewardsCardUseCaseInterface
      */
     public function payload()
     {
-        return ['data' => $this->requests];
+        return ['data' => [$this->request]];
     }
 
     /**
